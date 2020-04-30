@@ -5,9 +5,10 @@ NUL
 *.log
 node_modules/
 tsd.json
-*.map
 .settings/
-*.js
-!node-chess.js
+
+
+!build/*.js
+!build/node-chess.js
 !debug.js
 !profile/increment.js
