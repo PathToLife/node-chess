@@ -1,12 +1,9 @@
 {
   "name": "node-chess",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "An isomorphic and fully customisable JavaScript chess engine",
-  "main": "./build/src/node-chess.js",
+  "main": "./build/src/index.js",
   "types": "./build/src/index.d.ts",
-  "files": [
-    "build"
-  ],
   "scripts": {
     "test": "mocha --require ts-node/register test/*.spec.ts",
     "start": "node src/index.js",
