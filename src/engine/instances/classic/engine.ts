@@ -13,11 +13,11 @@ import checkGameEnd from './rules';
 export default function classEngine(): Engine {
 	const board = new Engine();
 
-	board.pieces = [
+	board.pieceDefinitions = [
 		pawn, knight, bishop, rook, queen, king
 	];
 
-	board.positionParser("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	board.parseFenString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 	board.postMoveFunctions = [checkGameEnd];
 

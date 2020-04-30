@@ -96,7 +96,7 @@ var superKnight = {
 	notation: "s"
 }
 
-customEngine.pieces.push(superKnight);
+customEngine.pieceDefinitions.push(superKnight);
 ```
 
 [![Analytics](https://ga-beacon.appspot.com/UA-61186849-1/seikho/node-chess)](https://github.com/Seikho/watcher)

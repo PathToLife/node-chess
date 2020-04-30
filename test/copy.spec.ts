@@ -40,7 +40,7 @@ describe("deep copy tests", () => {
 
 	it("will move a piece and not mutate the original boardState's moves", () => {
 		var board = newBoard();
-		board.positionParser("k6n/7p/8/8/8/8/7P/K6N w KQkq - 0 1");
+		board.parseFenString("k6n/7p/8/8/8/8/7P/K6N w KQkq - 0 1");
 		var o = board.boardState;
 
 		var future = board.calculateMovePiece(m(c(8, 2), c(8, 3)), o);

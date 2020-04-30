@@ -8,9 +8,9 @@ import toString from './helpers/toString';
 import getMoves from './helpers/getMoves';
 import inferMoves from './helpers/inferMoves';
 import movePiece, {calculateMovePiece} from './helpers/movePiece';
-import fenParser from './parsers/fen';
+import {parseFromFenString, stringifyToFenString} from './parsers/fen';
 import createSquares from './helpers/createSquares';
-import BasePiece from './basePiece';
+import PieceFactory from './basePiece';
 import availableMoves from './helpers/availableMoves';
 import getSquare from './helpers/getSquare';
 import createPiece from './helpers/createPiece';
@@ -38,10 +38,11 @@ export default class Engine {
         moveHistory: []
     }
 
-    pieces: IPiece[] = [];
-    pieceFactory = BasePiece;
+    pieceDefinitions: IPiece[] = [];
+    pieceFactory = PieceFactory;
 
-    positionParser = fenParser.bind(this);
+    parseFenString = parseFromFenString.bind(this);
+    stringifyFenString = stringifyToFenString.bind(this);
 
     movePiece = movePiece.bind(this);
     calculateMovePiece = calculateMovePiece.bind(this);

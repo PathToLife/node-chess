@@ -21,10 +21,10 @@ const moveForward: MoveDefinition = {
 			if (!move || move.to.rank !== 1 && move.to.rank !== 8) return;
 
 			const promotionNotation = (<string>move.options || Queen.notation).toLowerCase();
-			let promotionPiece = board.pieces.filter(p => p.notation === promotionNotation)[0];
+			let promotionPiece = board.pieceDefinitions.filter(p => p.notation === promotionNotation)[0];
 
 			if (!promotionPiece) {
-				promotionPiece = board.pieces.filter(p => p.notation === Queen.notation)[0];
+				promotionPiece = board.pieceDefinitions.filter(p => p.notation === Queen.notation)[0];
 			}
 
 			piece.canQueen = false;

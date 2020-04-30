@@ -18,19 +18,19 @@ var classicTagTest = hasTagTest.bind(classic);
 var classicLocationTest = atLocationTest.bind(classic);
 
 var checkmate = make.engine();
-checkmate.positionParser("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
+checkmate.parseFenString("6rk/6pp/3N4/8/8/8/PP2PPPP/RNBQKB1R w KQkq - 0 1");
 var cmMoveTest = pieceMoveTest.bind(checkmate);
 
 var blackCheckmate = make.engine();
-blackCheckmate.positionParser("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
+blackCheckmate.parseFenString("r5bk/6pp/3N4/8/8/8/4PPPP/7K b KQkq - 0 1");
 var blackCmMoveTest = pieceMoveTest.bind(blackCheckmate);
 
 var stalemate = make.engine();
-stalemate.positionParser("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
+stalemate.parseFenString("k7/p7/2R5/8/8/8/8/1R2K3 w - - 0 1");
 var stalementCmMoveTest = pieceMoveTest.bind(stalemate);
 
 var whitePromote = make.engine();
-whitePromote.positionParser("1nbqkbnr/Pppppppp/8/8/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1");
+whitePromote.parseFenString("1nbqkbnr/Pppppppp/8/8/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1");
 var whitePromiseMoveTest = pieceMoveTest.bind(whitePromote);
 
 describe("relatve destination tests", () => {

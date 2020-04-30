@@ -11,7 +11,7 @@ import {
  * @param location
  */
 export default function createPiece(this: Engine, notation: string, location: Coordinate): BasePiece {
-    const matchingPiece = this.pieces.filter(p => p.notation === notation.toLocaleLowerCase());
+    const matchingPiece = this.pieceDefinitions.filter(p => p.notation === notation.toLocaleLowerCase());
     if (matchingPiece.length === 0) throw Error('piece not found');
 
     // Update Piece Count on the boardState, and get ID of the piece
