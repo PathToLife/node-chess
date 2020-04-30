@@ -30,7 +30,7 @@ function stringifyToFenString() {
         halfMove: 0,
         fullMove: 0
     };
-    this.boardState.ranks.reverse().forEach(rank => {
+    this.boardState.ranks.slice().reverse().forEach(rank => {
         let rankRowPieces = [];
         rank.squares.forEach(sq => {
             if (sq.piece == null) {

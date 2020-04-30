@@ -1,4 +1,4 @@
-import { MoveFunction, BoardPiece, BoardState, IPiece } from '../types';
+import { MoveFunction, BoardState, IPiece } from '../types';
 import PieceFactory from './basePiece';
 /**
  * Board: extensible board (TODO: more detail)
@@ -17,7 +17,7 @@ export default class Engine {
     movePiece: (move: import("../types").Move) => BoardState | null;
     calculateMovePiece: (move: import("../types").Move, _boardState: BoardState) => {
         newBoardState: BoardState;
-        pieceAfterMove: BoardPiece;
+        pieceAfterMove: import("../types").BoardPiece;
     } | null;
     getSquare: (coordinate: import("../types").Coordinate, boardState?: BoardState | undefined) => import("../types").Square;
     getMoves: (coordinate: import("../types").Coordinate, boardState?: BoardState | undefined) => import("../types").Move[];

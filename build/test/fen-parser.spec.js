@@ -18,5 +18,13 @@ describe("fen parsing tests", () => {
         const s = e.stringifyFenString();
         chai_1.expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 2');
     });
+    it("will nobe affected by info calls, multiple calls stable", () => {
+        const e = engine_1.default();
+        for (let i = 0; i < 100; i++) {
+            const s = e.stringifyFenString();
+            chai_1.expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+            e.getMoves({ rank: i, file: i });
+        }
+    });
 });
 //# sourceMappingURL=fen-parser.spec.js.map
