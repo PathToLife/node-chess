@@ -20,4 +20,14 @@ describe("fen parsing tests", () => {
 		const s = e.stringifyFenString()
         expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 2')
     })
+
+    it("will nobe affected by info calls, multiple calls stable", () => {
+        const e = classicEngine();
+
+        for (let i=0; i < 100; i++) {
+            const s = e.stringifyFenString();
+            expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+            e.getMoves({rank: i, file: i})
+        }
+    })
 });

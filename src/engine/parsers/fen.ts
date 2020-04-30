@@ -48,7 +48,7 @@ export function stringifyToFenString(this: Engine): string {
 		fullMove: 0
 	}
 
-	this.boardState.ranks.reverse().forEach(rank => {
+	this.boardState.ranks.slice().reverse().forEach(rank => {
 		let rankRowPieces: string[] = []
 
 		rank.squares.forEach(sq => {
