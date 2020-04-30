@@ -35,6 +35,7 @@ function hasKingMoved(boardState: BoardState, isWhite: boolean): boolean {
 
 /**
  * Converts the board state to a fen string
+ * TODO enpassant
  */
 export function stringifyToFenString(this: Engine): string {
 
