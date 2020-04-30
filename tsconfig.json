@@ -4,12 +4,17 @@
     "target": "es6",
     "noImplicitAny": true,
     "removeComments": false,
-    "outDir": "./",
+    "outDir": "./build",
+    "declaration": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "strict": true
   },
+  "include": [
+    "src", "test"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build"
   ]
 }

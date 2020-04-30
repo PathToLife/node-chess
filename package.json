@@ -1,12 +1,19 @@
 {
   "name": "node-chess",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An isomorphic and fully customisable JavaScript chess engine",
-  "main": "src/index",
+  "main": "./build/src/node-chess.js",
+  "types": "./build/src/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "test": "mocha --require ts-node/register test/*.spec.ts",
     "start": "node src/index.js",
-    "build": "tsc && browserify src/index.js -o node-chess.js && browserify test/increments.spec.js -o profile/increments.js"
+    "package-browser": "browserify build/src/index.js -p [ tsify --noImplicitAny ] -o build/node-chess.js",
+    "package-tests": "browserify build/test/increments.spec.js -o profile/increments.js",
+    "build": "tsc"
+
   },
   "repository": {
     "type": "git",
@@ -31,13 +38,14 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
-    "browserify": "^11.0.1",
+    "browserify": "^16.5.1",
+    "tsify": "^4.0.1",
     "chai": "^2.1.2",
     "mocha": "^7.1.2",
-    "typescript": "^3.8.3",
     "ts-node": "^8.9.1"
   },
   "dependencies": {
+    "typescript": "^3.8.3",
     "@types/pegjs": "^0.10.1",
     "pegjs": "^0.10.0"
   }
