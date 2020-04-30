@@ -1,8 +1,8 @@
 import {
     MoveFunction,
-    BoardPiece,
     BoardState,
-    BoardTag, IPiece,
+    BoardTag,
+    IPiece
 } from '../types';
 import toString from './helpers/toString';
 import getMoves from './helpers/getMoves';
