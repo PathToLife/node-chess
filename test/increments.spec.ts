@@ -1,7 +1,6 @@
 import {
 	Coordinate,
 	SingleMove,
-	Square,
 	BoardPiece
 } from '../src/types';
 import {Direction} from '../src/enums';
@@ -184,6 +183,8 @@ function pieceMoveTest(this: Engine, message: string, from: Coordinate, to: Coor
 
 		var isShitMove = from.file === 2 && from.rank === 7;
 
+		//console.log(this.toString())
+
 		var board: Engine = this;
 		var expected = wont ? from : to;
 		// var square: Square = board.getSquare(from);
@@ -191,6 +192,8 @@ function pieceMoveTest(this: Engine, message: string, from: Coordinate, to: Coor
 		var newState = board.movePiece({ from, to });
 		var moved = newState ? board.getSquare(expected, newState) : null;
 		var movedPiece = moved?.piece;
+
+		// console.log(this.toString())
 
 		if (wont) {
 			expect(newState).to.be.null;

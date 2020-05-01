@@ -20,11 +20,7 @@ describe('should move pawns correctly', () => {
 });
 describe('should detect check', () => {
     const e = engine_1.default();
-<<<<<<< Updated upstream
-    e.parseFenString('rnb1kbnr/ppp2ppp/8/3pP1q1/4P3/5P2/PPPK2PP/RNBQ1BNR b KQkq - 0 10');
-=======
     e.parseFenString('rnb1kbnr/ppp2ppp/8/3pp1q1/3P4/2P5/PP1KPPPP/RNBQ1BNR w KQkq - 0 7');
->>>>>>> Stashed changes
     it('should have white king in the right place', () => {
         var _a, _b;
         const sq = e.getSquare({ file: 4, rank: 2 });
@@ -37,10 +33,6 @@ describe('should detect check', () => {
         chai_1.expect((_a = sq.piece) === null || _a === void 0 ? void 0 : _a.name).to.equal('Queen');
         chai_1.expect((_b = sq.piece) === null || _b === void 0 ? void 0 : _b.isWhite).to.be.false;
     });
-<<<<<<< Updated upstream
-    it.skip('should detect check', () => {
-        chai_1.expect(e.boardState.tags);
-=======
     it('should be white move', () => {
         chai_1.expect(e.boardState.whitesTurn).to.be.true;
     });
@@ -48,25 +40,24 @@ describe('should detect check', () => {
         chai_1.expect(e.boardState.tags.inCheckSquares.length > 0);
     });
     it('should not allow move that does not solve check', () => {
-        console.log(e.toString());
+        // console.log(e.toString())
         const res = e.movePiece({ from: { file: 3, rank: 3 }, to: { file: 3, rank: 4 } });
         chai_1.expect(res).to.be.null;
->>>>>>> Stashed changes
     });
 });
 describe('should not allow weird enpassant move', () => {
     const e = engine_1.default();
     it('should move white pawn', () => {
         chai_1.expect(e.movePiece({ from: { file: 5, rank: 2 }, to: { file: 5, rank: 4 } })).to.not.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     });
     it('should move black pawn', () => {
         chai_1.expect(e.movePiece({ from: { file: 5, rank: 7 }, to: { file: 5, rank: 5 } })).to.not.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     });
     it('should not enpassant move weird white pawn', () => {
         chai_1.expect(e.movePiece({ from: { file: 6, rank: 2 }, to: { file: 5, rank: 3 } })).to.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     });
 });
 //# sourceMappingURL=movetests.spec.js.map

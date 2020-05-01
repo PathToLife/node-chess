@@ -19,7 +19,7 @@ describe("benchmarks", function() {
 			return timer.stop();
 		});
 
-		console.log(JSON.stringify(times));
+		// console.log(JSON.stringify(times));
 	});
 });
 

@@ -16,7 +16,7 @@ describe("benchmarks", function () {
             e.movePiece({ from: { file: 2, rank: 2 }, to: { file: 2, rank: 3 } });
             return timer.stop();
         });
-        console.log(JSON.stringify(times));
+        // console.log(JSON.stringify(times));
     });
 });
 class Timer {

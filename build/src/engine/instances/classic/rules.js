@@ -105,9 +105,9 @@ function isCheck(checkWhite, boardState) {
     if (!kingSquare)
         throw Error("Unable to locate opposing king");
     return boardState.moves.filter((move) => {
-        if (kingSquare == null)
-            return;
-        return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank;
+        if (move.isWhite === checkWhite)
+            return false;
+        return kingSquare && move.to.file === kingSquare.file && move.to.rank === kingSquare.rank;
     });
 }
 function fiftyMoveRule(state) {

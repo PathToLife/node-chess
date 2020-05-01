@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import engine from "../src/engine/instances/classic/engine";
-import {boardToString} from "../src";
 
 describe('should move pawns correctly',  () => {
     const e = engine()
@@ -43,7 +42,7 @@ describe('should detect check', () => {
         expect(e.boardState.tags.inCheckSquares.length > 0)
     })
     it('should not allow move that does not solve check', () => {
-        console.log(e.toString())
+        // console.log(e.toString())
         const res = e.movePiece({from: {file: 3, rank: 3}, to: {file: 3, rank: 4}})
         expect(res).to.be.null;
     })
@@ -54,16 +53,16 @@ describe('should not allow weird enpassant move', () => {
 
     it('should move white pawn', () => {
         expect(e.movePiece({from: {file:5, rank:2}, to: {file:5, rank: 4}})).to.not.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     })
 
     it('should move black pawn', () => {
         expect(e.movePiece({from: {file:5, rank:7}, to: {file:5, rank: 5}})).to.not.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     })
 
     it('should not enpassant move weird white pawn', () => {
         expect(e.movePiece({from: {file:6, rank:2}, to: {file:5, rank: 3}})).to.be.null;
-        console.log(e.toString());
+        // console.log(e.toString());
     })
 })

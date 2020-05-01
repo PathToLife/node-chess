@@ -148,6 +148,7 @@ var count = 0;
 function pieceMoveTest(message, from, to, wont = false) {
     it(message, () => {
         var isShitMove = from.file === 2 && from.rank === 7;
+        //console.log(this.toString())
         var board = this;
         var expected = wont ? from : to;
         // var square: Square = board.getSquare(from);
@@ -155,6 +156,7 @@ function pieceMoveTest(message, from, to, wont = false) {
         var newState = board.movePiece({ from, to });
         var moved = newState ? board.getSquare(expected, newState) : null;
         var movedPiece = moved === null || moved === void 0 ? void 0 : moved.piece;
+        // console.log(this.toString())
         if (wont) {
             chai_1.expect(newState).to.be.null;
             return;
