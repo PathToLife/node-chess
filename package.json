@@ -10,7 +10,6 @@
     "package-browser": "browserify build/src/index.js -p [ tsify --noImplicitAny ] -o build/node-chess.js",
     "package-tests": "browserify build/test/increments.spec.js -o profile/increments.js",
     "build": "tsc"
-
   },
   "repository": {
     "type": "git",
@@ -36,14 +35,12 @@
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
     "browserify": "^16.5.1",
-    "tsify": "^4.0.1",
     "chai": "^2.1.2",
     "mocha": "^7.1.2",
-    "ts-node": "^8.9.1"
+    "ts-node": "^8.9.1",
+    "tsify": "^4.0.1"
   },
   "dependencies": {
-    "typescript": "^3.8.3",
-    "@types/pegjs": "^0.10.1",
-    "pegjs": "^0.10.0"
+    "typescript": "^3.8.3"
   }
 }

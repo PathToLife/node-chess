@@ -12,7 +12,7 @@ export default class Engine {
     boardState: BoardState;
     pieceDefinitions: IPiece[];
     pieceFactory: typeof PieceFactory;
-    parseFenString: (position?: string | undefined) => void;
+    parseFenString: (fenString: string) => string | boolean;
     stringifyFenString: () => string;
     movePiece: (move: import("../types").Move) => BoardState | null;
     calculateMovePiece: (move: import("../types").Move, _boardState: BoardState) => {

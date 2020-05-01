@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const king_1 = require("../instances/classic/king");
 const rook_1 = require("../instances/classic/rook");
-const fen_1 = require("./stringParsers/fen");
-const defaultPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 function hasRookMoved(boardState, isWhite, isQueenSide) {
     return boardState.moveHistory.some(move => {
         const piece = move.piece;
@@ -84,18 +82,75 @@ exports.stringifyToFenString = stringifyToFenString;
 /**
  * Parses fen string and sets engine state accordingly
  * Does not load castling or enpassant info.. // Since this engine allows for variants
- *
- * @param position - the fen string
+ * rnb1kbnr/ppp2ppp/8/3pP1q1/4P3/5P2/PPPK2PP/RNBQ1BNR b KQkq - 0 10
+ * @param fenString - the fen string
  */
-function parseFromFenString(position) {
-    const engineInput = fen_1.default.parse(position || defaultPosition);
-    this.boardState.whitesTurn = engineInput.turn === "w";
-    let rankCount = this.rankCount;
-    engineInput.ranks.forEach(rank => {
-        this.boardState.ranks[rankCount] = createFilesForRank(this, rank, rankCount);
-        rankCount--;
+function parseFromFenString(fenString) {
+    // const engineInput: Fen = fenStringParser.parse(position || defaultPosition) as Fen;
+    // this.boardState.whitesTurn = engineInput.turn === "w";
+    //
+    // let rankCount = this.rankCount;
+    //
+    // engineInput.ranks.forEach(rank => {
+    // 	this.boardState.ranks[rankCount] = createFilesForRank(this, rank, rankCount);
+    // 	rankCount--;
+    // });
+    let fenClean = fenString.split(' ');
+    fenClean = fenClean.map(s => s.trim());
+    fenClean = fenClean.filter(s => s.length > 0);
+    if (fenClean.length !== 6)
+        return 'fen does not contain all 6 sections';
+    const fen = {
+        ranks: fenClean[0].split('/'),
+        turn: fenClean[1].toLowerCase() === 'w' ? 'w' : 'b',
+        castling: fenClean[2].split(''),
+        enpassant: fenClean[3],
+        halfMove: Number(fenClean[4]),
+        fullMove: Number(fenClean[5])
+    };
+    if (fen.ranks.length !== 8)
+        return 'fen board definition is not 8 sections';
+    this.boardState.ranks = [];
+    fen.ranks.forEach((fileStr, i) => {
+        const fileStrArr = fileStr.split('');
+        const rankIndex = 8 - i;
+        let fileIndex = 1;
+        const rank = {
+            rank: rankIndex,
+            squares: []
+        };
+        fileStrArr.forEach(file => {
+            if (!isNaN(Number(file))) {
+                const endIndex = Number(file) + fileIndex;
+                for (let i = fileIndex; i < endIndex; i++) {
+                    rank.squares[fileIndex] = {
+                        rank: rankIndex,
+                        file: fileIndex,
+                        piece: null,
+                        tags: {}
+                    };
+                    fileIndex += 1;
+                }
+            }
+            else {
+                const notation = file;
+                rank.squares[fileIndex] = {
+                    rank: rankIndex,
+                    file: fileIndex,
+                    piece: this.createPiece(notation, {
+                        file: fileIndex,
+                        rank: rankIndex
+                    }),
+                    tags: {}
+                };
+                fileIndex += 1;
+            }
+        });
+        this.boardState.ranks[rankIndex] = rank;
     });
+    this.boardState.whitesTurn = fen.turn === 'w';
     this.populateAvailableMoves();
+    return true;
 }
 exports.parseFromFenString = parseFromFenString;
 function createFilesForRank(engine, fenRank, rankNumber) {
