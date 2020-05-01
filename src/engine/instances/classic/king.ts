@@ -6,7 +6,7 @@ import {
 	MoveFunction,
 	Square
 } from '../../../types';
-import Rook from './rook';
+import {rook} from './rook';
 
 /**
  * King with castling support
@@ -62,7 +62,7 @@ function makeCastleMoveCondition(rookSquare: Coordinate): MoveCondition {
 		// Piece must be a rook and the same colour..
 		if (square == null) return false;
 		if (square.piece == null) return false;
-		if (square.piece.name !== Rook.name) return false;
+		if (square.piece.name !== rook.name) return false;
 		if (square.piece.isWhite !== piece.isWhite) return false;
 
 		// Rook must not have moved
@@ -95,7 +95,7 @@ function postCastle(rookSquare: Coordinate, rookDestination: Coordinate): MoveFu
 	}
 }
 
-const king: IPiece = {
+export const king: IPiece = {
 	notation: "k",
 	name: "King",
 	movement: [upLeft, upRight, downLeft, downRight, up, down, left, right, queenSideCastle, kingSideCastle],
@@ -104,5 +104,3 @@ const king: IPiece = {
 	value: 10,
 	postMoveFunctions: []
 }
-
-export { king as default }

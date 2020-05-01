@@ -14,10 +14,10 @@ const rules_1 = require("./rules");
 function classEngine() {
     const board = new index_1.default();
     board.pieceDefinitions = [
-        pawn_1.default, knight_1.default, bishop_1.default, rook_1.default, queen_1.default, king_1.default
+        pawn_1.pawn, knight_1.knight, bishop_1.bishop, rook_1.rook, queen_1.queen, king_1.king
     ];
     board.parseFenString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    board.postSuccessfulMoveFunctions = [rules_1.default];
+    board.postSuccessfulMoveFunctions = [rules_1.postSuccessfulMoveFunction];
     board.boardState.postMoveFunctions.push(rules_1.postMoveFunction);
     return board;
 }

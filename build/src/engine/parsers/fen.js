@@ -6,13 +6,13 @@ function hasRookMoved(boardState, isWhite, isQueenSide) {
     return boardState.moveHistory.some(move => {
         const piece = move.piece;
         const sideQueen = piece.location.file === 0;
-        return piece.notation === rook_1.default.notation && piece.isWhite === isWhite && sideQueen === isQueenSide;
+        return piece.notation === rook_1.rook.notation && piece.isWhite === isWhite && sideQueen === isQueenSide;
     });
 }
 function hasKingMoved(boardState, isWhite) {
     return boardState.moveHistory.some(move => {
         const piece = move.piece;
-        return piece.notation === king_1.default.notation && move.piece.isWhite === isWhite;
+        return piece.notation === king_1.king.notation && move.piece.isWhite === isWhite;
     });
 }
 /**

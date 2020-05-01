@@ -72,4 +72,8 @@ describe('should not allow weird enpassant move', () => {
         // console.log(e.toString());
     });
 });
+describe('should promote to correct color', () => {
+    const e = engine_1.default();
+    e.parseFenString('rnb1kbnr/ppp2ppp/8/3p4/2BP3q/2P2PPN/PP1K3P/RNBQq2R w KQkq - 20 21');
+});
 //# sourceMappingURL=movetests.spec.js.map

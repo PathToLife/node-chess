@@ -1,3 +1,2 @@
 import { IPiece } from '../../../types';
-declare const queen: IPiece;
-export { queen as default };
+export declare const queen: IPiece;

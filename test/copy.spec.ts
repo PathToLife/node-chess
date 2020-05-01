@@ -1,7 +1,7 @@
 import {
 	Coordinate,
 	Move
-} from '../src/types';
+} from '../src';
 import chess from '../src';
 import {expect} from 'chai';
 import deepCopy from '../src/engine/helpers/deepCopy';

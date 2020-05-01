@@ -18,7 +18,7 @@ function makeMove(file, rank) {
         transforms: { file, rank, canJump: true },
     };
 }
-const knight = {
+exports.knight = {
     name: "Knight",
     movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
     canQueen: false,
@@ -27,5 +27,4 @@ const knight = {
     notation: "n",
     postMoveFunctions: []
 };
-exports.default = knight;
 //# sourceMappingURL=knight.js.map

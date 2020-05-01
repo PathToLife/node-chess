@@ -27,7 +27,7 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-const knight: IPiece = {
+export const knight: IPiece = {
 	name: "Knight",
 	movement: [upLeft, upRight, downLeft, downRight, leftUp, leftDown, rightUp, rightDown],
 	canQueen: false,
@@ -36,5 +36,3 @@ const knight: IPiece = {
 	notation: "n",
 	postMoveFunctions: []
 }
-
-export { knight as default }

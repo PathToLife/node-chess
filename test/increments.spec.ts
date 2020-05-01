@@ -2,7 +2,7 @@ import {
 	Coordinate,
 	SingleMove,
 	BoardPiece
-} from '../src/types';
+} from '../src';
 import {Direction} from '../src/enums';
 import Engine from '../src/engine';
 import chess from "../src/index";

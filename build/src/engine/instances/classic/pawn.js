@@ -13,10 +13,10 @@ const moveForward = {
             const move = state.moveHistory.slice(-1)[0];
             if (!move || move.to.rank !== 1 && move.to.rank !== 8)
                 return;
-            const promotionNotation = (move.options || queen_1.default.notation).toLowerCase();
+            const promotionNotation = (move.options || queen_1.queen.notation).toLowerCase();
             let promotionPiece = board.pieceDefinitions.filter(p => p.notation === promotionNotation)[0];
             if (!promotionPiece) {
-                promotionPiece = board.pieceDefinitions.filter(p => p.notation === queen_1.default.notation)[0];
+                promotionPiece = board.pieceDefinitions.filter(p => p.notation === queen_1.queen.notation)[0];
             }
             piece.canQueen = false;
             piece.canSpawn = true;
@@ -88,7 +88,7 @@ const rightEnpassant = {
         action: enpassantPostMove
     }
 };
-const pawn = {
+exports.pawn = {
     notation: "p",
     name: "Pawn",
     movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
@@ -97,5 +97,4 @@ const pawn = {
     value: 1,
     postMoveFunctions: []
 };
-exports.default = pawn;
 //# sourceMappingURL=pawn.js.map

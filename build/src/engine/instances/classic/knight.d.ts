@@ -1,3 +1,2 @@
 import { IPiece } from '../../../types';
-declare const knight: IPiece;
-export { knight as default };
+export declare const knight: IPiece;

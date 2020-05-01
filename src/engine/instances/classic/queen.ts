@@ -20,7 +20,7 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-const queen: IPiece = {
+export const queen: IPiece = {
 	notation: "q",
 	name: "Queen",
 	movement: [upLeft, upRight, downLeft, downRight, up, down, left, right],
@@ -29,5 +29,3 @@ const queen: IPiece = {
 	value: 9,
 	postMoveFunctions: []
 }
-
-export { queen as default }

@@ -18,12 +18,11 @@ exports.postMoveFunction = {
         }
     }
 };
-const postSuccessfulMoveFunction = {
+exports.postSuccessfulMoveFunction = {
     action: (piece, boardState, board) => {
         return processIsGameOver(boardState, board);
     }
 };
-exports.default = postSuccessfulMoveFunction;
 /**
  * Check if move a move is allowed
  *
@@ -123,6 +122,6 @@ function fiftyMoveRule(state) {
     return !lastFiftyMoves.some(isPawn);
 }
 function isPawn(move) {
-    return move.piece.notation === pawn_1.default.notation;
+    return move.piece.notation === pawn_1.pawn.notation;
 }
 //# sourceMappingURL=rules.js.map

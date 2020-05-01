@@ -1,7 +1,7 @@
 import Engine from '../index';
 import {BoardState, Rank} from '../../types';
-import King from '../instances/classic/king';
-import Rook from '../instances/classic/rook';
+import {king} from '../instances/classic/king';
+import {rook} from '../instances/classic/rook';
 
 interface Fen {
     ranks: string[];
@@ -16,14 +16,14 @@ function hasRookMoved(boardState: BoardState, isWhite: boolean, isQueenSide: boo
     return boardState.moveHistory.some(move => {
         const piece = move.piece;
         const sideQueen = piece.location.file === 0
-        return piece.notation === Rook.notation && piece.isWhite === isWhite && sideQueen === isQueenSide;
+        return piece.notation === rook.notation && piece.isWhite === isWhite && sideQueen === isQueenSide;
     })
 }
 
 function hasKingMoved(boardState: BoardState, isWhite: boolean): boolean {
     return boardState.moveHistory.some(move => {
         const piece = move.piece;
-        return piece.notation === King.notation && move.piece.isWhite === isWhite;
+        return piece.notation === king.notation && move.piece.isWhite === isWhite;
     })
 }
 

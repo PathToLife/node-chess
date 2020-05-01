@@ -11,7 +11,7 @@ function makeMove(file, rank) {
         incrementer: { file, rank }
     };
 }
-const rook = {
+exports.rook = {
     notation: "r",
     name: "Rook",
     movement: [up, down, left, right],
@@ -20,5 +20,4 @@ const rook = {
     value: 5,
     postMoveFunctions: []
 };
-exports.default = rook;
 //# sourceMappingURL=rook.js.map

@@ -24,16 +24,18 @@ function boardToString(board) {
     return rankString.reverse().join("\r\n");
 }
 exports.boardToString = boardToString;
-function toString() {
-    var ranks = [];
-    var fileLabels = ['-'];
-    for (var i = this.rankCount; i > 0; i--) {
+function toString(boardState) {
+    if (boardState)
+        return boardToString(boardState);
+    const ranks = [];
+    const fileLabels = ['-'];
+    for (let i = this.rankCount; i > 0; i--) {
         fileLabels[i] = "_" + i + "_";
-        var pieces = [i];
-        var rank = this.boardState.ranks[i];
-        for (var p in rank.squares) {
-            var s = rank.squares[p];
-            var val = s.piece == null ? "_" : s.piece.notation;
+        const pieces = [i];
+        const rank = this.boardState.ranks[i];
+        for (let p in rank.squares) {
+            const s = rank.squares[p];
+            let val = s.piece == null ? "_" : s.piece.notation;
             if (s.piece)
                 val = s.piece.isWhite ? val.toUpperCase() : val.toLowerCase();
             pieces.push("_" + val + "_");

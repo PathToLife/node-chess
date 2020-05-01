@@ -11,7 +11,7 @@ function makeMove(file, rank) {
         incrementer: { file, rank }
     };
 }
-const bishop = {
+exports.bishop = {
     notation: "b",
     name: "Bishop",
     movement: [upLeft, upRight, downLeft, downRight],
@@ -20,5 +20,4 @@ const bishop = {
     value: 3,
     postMoveFunctions: []
 };
-exports.default = bishop;
 //# sourceMappingURL=bishop.js.map

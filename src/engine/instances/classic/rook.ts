@@ -16,7 +16,7 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-const rook: IPiece = {
+export const rook: IPiece = {
 	notation: "r",
 	name: "Rook",
 	movement: [up, down, left, right],
@@ -25,5 +25,3 @@ const rook: IPiece = {
 	value: 5,
 	postMoveFunctions: []
 }
-
-export { rook as default }

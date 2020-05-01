@@ -16,7 +16,7 @@ function makeMove(file: number, rank: number): MoveDefinition {
 	}
 }
 
-const bishop: IPiece = {
+export const bishop: IPiece = {
 	notation: "b",
 	name: "Bishop",
 	movement: [upLeft, upRight, downLeft, downRight],
@@ -25,5 +25,3 @@ const bishop: IPiece = {
 	value: 3,
 	postMoveFunctions: []
 }
-
-export { bishop as default }

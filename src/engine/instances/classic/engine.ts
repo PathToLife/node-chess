@@ -1,11 +1,11 @@
 import Engine from '../../index';
-import pawn from './pawn';
-import knight from './knight';
-import bishop from './bishop';
-import rook from './rook';
-import queen from './queen';
-import king from './king';
-import checkGameEnd, {postMoveFunction} from './rules';
+import {pawn} from "./pawn";
+import {knight} from './knight';
+import {bishop} from './bishop';
+import {rook} from './rook';
+import {queen} from './queen';
+import {king} from './king';
+import {postSuccessfulMoveFunction as checkGameEnd, postMoveFunction} from './rules';
 
 /**
  * Engine Definition for classic chess

@@ -48,7 +48,7 @@ function makeCastleMoveCondition(rookSquare) {
             return false;
         if (square.piece == null)
             return false;
-        if (square.piece.name !== rook_1.default.name)
+        if (square.piece.name !== rook_1.rook.name)
             return false;
         if (square.piece.isWhite !== piece.isWhite)
             return false;
@@ -77,7 +77,7 @@ function postCastle(rookSquare, rookDestination) {
         }
     };
 }
-const king = {
+exports.king = {
     notation: "k",
     name: "King",
     movement: [upLeft, upRight, downLeft, downRight, up, down, left, right, queenSideCastle, kingSideCastle],
@@ -86,5 +86,4 @@ const king = {
     value: 10,
     postMoveFunctions: []
 };
-exports.default = king;
 //# sourceMappingURL=king.js.map

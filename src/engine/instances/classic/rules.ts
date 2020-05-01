@@ -1,6 +1,6 @@
 import Engine from '../../index';
-import King from './king';
-import Pawn from './pawn';
+import {king} from './king';
+import {pawn} from './pawn';
 import {
     BoardState,
     Move,
@@ -29,13 +29,11 @@ export const postMoveFunction: MoveFunction = {
     }
 }
 
-const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction> = {
+export const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction> = {
     action: (piece: BoardPiece | null, boardState: BoardState, board: Engine) => {
         return processIsGameOver(boardState, board);
     }
 }
-
-export default postSuccessfulMoveFunction
 
 /**
  * Check if move a move is allowed
@@ -148,5 +146,5 @@ function fiftyMoveRule(state: BoardState) {
 }
 
 function isPawn(move: MoveHistory) {
-    return move.piece.notation === Pawn.notation;
+    return move.piece.notation === pawn.notation;
 }

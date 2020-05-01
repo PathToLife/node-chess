@@ -15,7 +15,7 @@ function makeMove(file, rank) {
         incrementer: { file, rank }
     };
 }
-const queen = {
+exports.queen = {
     notation: "q",
     name: "Queen",
     movement: [upLeft, upRight, downLeft, downRight, up, down, left, right],
@@ -24,5 +24,4 @@ const queen = {
     value: 9,
     postMoveFunctions: []
 };
-exports.default = queen;
 //# sourceMappingURL=queen.js.map

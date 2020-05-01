@@ -5,7 +5,7 @@ import {
 	BoardState,
 	IPiece, BoardPiece, MoveFunctionAction
 } from '../../../types';
-import Queen from './queen';
+import {queen} from './queen';
 import {isInBounds} from "../../helpers/inferMoves";
 
 /**
@@ -20,11 +20,11 @@ const moveForward: MoveDefinition = {
 			const move = state.moveHistory.slice(-1)[0];
 			if (!move || move.to.rank !== 1 && move.to.rank !== 8) return;
 
-			const promotionNotation = (<string>move.options || Queen.notation).toLowerCase();
+			const promotionNotation = (<string>move.options || queen.notation).toLowerCase();
 			let promotionPiece = board.pieceDefinitions.filter(p => p.notation === promotionNotation)[0];
 
 			if (!promotionPiece) {
-				promotionPiece = board.pieceDefinitions.filter(p => p.notation === Queen.notation)[0];
+				promotionPiece = board.pieceDefinitions.filter(p => p.notation === queen.notation)[0];
 			}
 
 			piece.canQueen = false;
@@ -106,7 +106,7 @@ const rightEnpassant: MoveDefinition = {
 	}
 }
 
-const pawn: IPiece = {
+export const pawn: IPiece = {
 	notation: "p",
 	name: "Pawn",
 	movement: [moveForward, firstMove, leftCapture, rightCapture, leftEnpassant, rightEnpassant],
@@ -115,5 +115,3 @@ const pawn: IPiece = {
 	value: 1,
 	postMoveFunctions: []
 }
-
-export { pawn as default }

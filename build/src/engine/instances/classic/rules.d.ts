@@ -6,5 +6,4 @@ import { BoardFunctionAction, MoveFunction } from '../../../types';
  * Checks if player is still in check after a move
  */
 export declare const postMoveFunction: MoveFunction;
-declare const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction>;
-export default postSuccessfulMoveFunction;
+export declare const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction>;
