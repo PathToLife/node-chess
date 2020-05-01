@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const engine_1 = require("./engine");
 const engine_2 = require("./engine/instances/classic/engine");
 const enums_1 = require("./enums");
+var toString_1 = require("./engine/helpers/toString");
+exports.boardToString = toString_1.boardToString;
 const chess = {
     Direction: enums_1.Direction,
     Engine: engine_1.default,
