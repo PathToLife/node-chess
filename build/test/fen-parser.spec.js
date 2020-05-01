@@ -16,7 +16,7 @@ describe("fen parsing tests", () => {
         const e = engine_1.default();
         e.movePiece({ from: { file: 1, rank: 2 }, to: { file: 1, rank: 3 } });
         const s = e.stringifyFenString();
-        chai_1.expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 2');
+        chai_1.expect(s).to.equal('rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 1 2');
     });
     it("will nobe affected by info calls, multiple calls stable", () => {
         const e = engine_1.default();

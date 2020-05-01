@@ -15,19 +15,23 @@ export interface BoardState {
     moveHistory: MoveHistory[];
 }
 
+export type TGameEndReason = 'WhiteWinCheckMate' | 'BlackWinCheckMate' | '50RuleDraw' | 'OutOfMovesDraw'
+
 export interface BoardTag {
     initialPieceCount: number,
     inCheckSquares: Move[]
     gameEndReason: null | TGameEndReason
 }
 
+export type BoardFunctionAction = (piece: BoardPiece | null, boardState: BoardState, board: Engine) => any;
+
 export type MoveFunctionAction = (piece: BoardPiece, boardState: BoardState, board: Engine) => any;
 
 export type BoardFunctionCommandReturn = 'nullifyMoveDoesNotSolveCheck';
 
-export interface MoveFunction {
+export interface MoveFunction<T = MoveFunctionAction>{
     moveNumber?: number;
-    action: MoveFunctionAction;
+    action: T;
 }
 
 export interface Coordinate {

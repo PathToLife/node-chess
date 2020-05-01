@@ -84,7 +84,7 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 	}
 
 
-	// Update move count, perhaps length of moveHistory !== moveCount?
+	// Update move count
 	newBoardState.moveNumber++;
 	// Remove postMoveFunctions that are expired
 	newBoardState.postMoveFunctions = boardStatePostMoveFunctions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);

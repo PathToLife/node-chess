@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import engine from "../src/engine/instances/classic/engine";
+import {boardToString} from "../src";
 
 describe('should move pawns correctly',  () => {
     const e = engine()
@@ -23,7 +24,7 @@ describe('should move pawns correctly',  () => {
 
 describe('should detect check', () => {
     const e = engine()
-    e.parseFenString('rnb1kbnr/ppp2ppp/8/3pP1q1/4P3/5P2/PPPK2PP/RNBQ1BNR b KQkq - 0 10')
+    e.parseFenString('rnb1kbnr/ppp2ppp/8/3pp1q1/3P4/2P5/PP1KPPPP/RNBQ1BNR w KQkq - 0 7')
 
     it('should have white king in the right place', () => {
         const sq = e.getSquare({file: 4, rank: 2})
@@ -34,6 +35,9 @@ describe('should detect check', () => {
         const sq = e.getSquare({file: 7, rank: 5})
         expect(sq.piece?.name).to.equal('Queen')
         expect(sq.piece?.isWhite).to.be.false;
+    })
+    it('should be white move', () => {
+        expect(e.boardState.whitesTurn).to.be.true
     })
     it('should detect check', () => {
         expect(e.boardState.tags.inCheckSquares.length > 0)

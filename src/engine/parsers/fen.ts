@@ -1,8 +1,5 @@
 import Engine from '../index';
-import {
-    BoardState,
-    Rank
-} from '../../types';
+import {BoardState, Rank} from '../../types';
 import King from '../instances/classic/king';
 import Rook from '../instances/classic/rook';
 
@@ -96,6 +93,7 @@ export function stringifyToFenString(this: Engine): string {
         fen.castling.push('-')
     }
 
+    fen.halfMove = this.boardState.moveHistory.length;
     fen.fullMove = this.boardState.moveNumber;
 
     const ranksStr = fen.ranks.join('/')
@@ -110,17 +108,6 @@ export function stringifyToFenString(this: Engine): string {
  * @param fenString - the fen string
  */
 export function parseFromFenString(this: Engine, fenString: string): boolean | string {
-
-    // const engineInput: Fen = fenStringParser.parse(position || defaultPosition) as Fen;
-
-    // this.boardState.whitesTurn = engineInput.turn === "w";
-    //
-    // let rankCount = this.rankCount;
-    //
-    // engineInput.ranks.forEach(rank => {
-    // 	this.boardState.ranks[rankCount] = createFilesForRank(this, rank, rankCount);
-    // 	rankCount--;
-    // });
 
     let fenClean = fenString.split(' ')
     fenClean = fenClean.map(s => s.trim())
@@ -165,12 +152,11 @@ export function parseFromFenString(this: Engine, fenString: string): boolean | s
                     }
                     fileIndex += 1;
                 }
-            } else {
-                const notation = file;
+            } else { // param: file - is piece notation string
                 rank.squares[fileIndex] = {
                     rank: rankIndex,
                     file: fileIndex,
-                    piece: this.createPiece(notation, {
+                    piece: this.createPiece(file, {
                         file: fileIndex,
                         rank: rankIndex
                     }),
@@ -187,45 +173,47 @@ export function parseFromFenString(this: Engine, fenString: string): boolean | s
     this.boardState.whitesTurn = fen.turn === 'w';
 
     this.populateAvailableMoves();
+    this.postSuccessfulMoveFunctions.forEach(func => func.action(null, this.boardState, this))
 
     return true
 }
 
-function createFilesForRank(engine: Engine, fenRank: string, rankNumber: number): Rank {
-    const rank: Rank = {
-        rank: rankNumber,
-        squares: []
-    }
-    const fenRankArray = fenRank.split('');
-
-    let lastNotationNumber = 0;
-    let index = 0;
-    for (let i = 1; i <= engine.fileCount; i++) {
-        const notation = fenRankArray[index];
-        const notationNumber = parseInt(notation);
-
-        // If the notation is a number, that many squares from this square contain no piece.
-        // TODO Consider refactoring--export to function for readability
-        if (!isNaN(notationNumber)) {
-            lastNotationNumber += notationNumber;
-            // Insert the next notation after the blank squares.
-            if (!!fenRankArray[i + 1]) fenRankArray[i + notationNumber] = fenRankArray[i + 1];
-
-            // Insert blank squares from the current square, to currentSquare+notationNumber.
-            for (let j = i; j < i + notationNumber; j++) {
-                rank.squares[j] = {rank: rankNumber, file: j, piece: null, tags: {}};
-            }
-            i += notationNumber - 1;
-            index++;
-            continue;
-        }
-        rank.squares[i] = {
-            rank: rankNumber,
-            file: i,
-            piece: engine.createPiece(notation, {file: i, rank: rankNumber}),
-            tags: {}
-        };
-        index++;
-    }
-    return rank;
-}
+// @deprecated delete later on, bugged loading
+// function createFilesForRank(engine: Engine, fenRank: string, rankNumber: number): Rank {
+//     const rank: Rank = {
+//         rank: rankNumber,
+//         squares: []
+//     }
+//     const fenRankArray = fenRank.split('');
+//
+//     let lastNotationNumber = 0;
+//     let index = 0;
+//     for (let i = 1; i <= engine.fileCount; i++) {
+//         const notation = fenRankArray[index];
+//         const notationNumber = parseInt(notation);
+//
+//         // If the notation is a number, that many squares from this square contain no piece.
+//         // TODO Consider refactoring--export to function for readability
+//         if (!isNaN(notationNumber)) {
+//             lastNotationNumber += notationNumber;
+//             // Insert the next notation after the blank squares.
+//             if (!!fenRankArray[i + 1]) fenRankArray[i + notationNumber] = fenRankArray[i + 1];
+//
+//             // Insert blank squares from the current square, to currentSquare+notationNumber.
+//             for (let j = i; j < i + notationNumber; j++) {
+//                 rank.squares[j] = {rank: rankNumber, file: j, piece: null, tags: {}};
+//             }
+//             i += notationNumber - 1;
+//             index++;
+//             continue;
+//         }
+//         rank.squares[i] = {
+//             rank: rankNumber,
+//             file: i,
+//             piece: engine.createPiece(notation, {file: i, rank: rankNumber}),
+//             tags: {}
+//         };
+//         index++;
+//     }
+//     return rank;
+// }

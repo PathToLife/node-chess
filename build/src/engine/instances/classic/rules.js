@@ -4,12 +4,20 @@ const pawn_1 = require("./pawn");
 /**
  * Classic Chess Game Rules
  */
-const postMoveFunction = {
+/**
+ * Checks if player is still in check after a move
+ */
+exports.postMoveFunction = {
+    action: (piece, boardState, board) => {
+        return isCheck(boardState.whitesTurn, boardState).length > 0 ? 'nullifyMoveDoesNotSolveCheck' : undefined;
+    }
+};
+const postSuccessfulMoveFunction = {
     action: (piece, boardState, board) => {
         return processIsGameOver(boardState, board);
     }
 };
-exports.default = postMoveFunction;
+exports.default = postSuccessfulMoveFunction;
 /**
  * Check if move a move is allowed
  *
@@ -31,7 +39,7 @@ function isMoveAllowed(move, boardState, board) {
             return false;
         // In check
         const check = isCheck(turn, res.newBoardState);
-        return !check;
+        return check.length === 0;
     }
     catch (ex) {
         // No king due to being captured
@@ -44,10 +52,7 @@ function isMoveAllowed(move, boardState, board) {
  * @param board
  */
 function allowedMoves(boardState, board) {
-    function isLegit(move) {
-        return isMoveAllowed(move, boardState, board);
-    }
-    return boardState.moves.filter(isLegit);
+    return boardState.moves.filter(move => isMoveAllowed(move, boardState, board));
 }
 /**
  * Checks if the game is over and assigns the associated states
@@ -59,24 +64,28 @@ function processIsGameOver(boardState, board) {
     if (fiftyMoveStalemate) {
         boardState.gameIsDrawn = true;
         boardState.moves = []; // this should be already set to empty?
+        boardState.tags.gameEndReason = "50RuleDraw";
         return true;
     }
-    const isInCheck = isCheck(boardState.whitesTurn, boardState);
+    const inCheckSquares = isCheck(boardState.whitesTurn, boardState);
+    boardState.tags.inCheckSquares = inCheckSquares;
     const moves = allowedMoves(boardState, board);
     const hasMoves = moves.length > 0;
     if (hasMoves)
         return false;
     boardState.moves = [];
-    if (isInCheck) {
+    if (inCheckSquares.length > 0) {
         boardState.winnerIsWhite = !boardState.whitesTurn;
+        boardState.tags.gameEndReason = boardState.whitesTurn ? "WhiteWinCheckMate" : "BlackWinCheckMate";
     }
     else {
         boardState.gameIsDrawn = true;
+        boardState.tags.gameEndReason = "OutOfMovesDraw";
     }
     return true;
 }
 /**
- * Check is side is inCheck given a board state
+ * Check if side is inCheck given a board state, and returns squares in question
  * @param checkWhite
  * @param boardState
  */
@@ -95,12 +104,11 @@ function isCheck(checkWhite, boardState) {
     }
     if (!kingSquare)
         throw Error("Unable to locate opposing king");
-    const kingAttackers = boardState.moves.filter((move) => {
+    return boardState.moves.filter((move) => {
         if (kingSquare == null)
             return;
         return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank;
     });
-    return kingAttackers.length > 0;
 }
 function fiftyMoveRule(state) {
     if (state.moveHistory.length < 50)

@@ -6,8 +6,9 @@ import {
     Move,
     Square,
     MoveHistory,
-    MoveFunction,
-    BoardPiece
+    BoardFunctionAction,
+    BoardPiece,
+    MoveFunction, BoardFunctionCommandReturn,
 } from '../../../types';
 
 /**
@@ -23,8 +24,8 @@ export const postMoveFunction: MoveFunction = {
     }
 }
 
-const postMoveFunction: MoveFunction = {
-    action: (piece: BoardPiece, boardState: BoardState, board: Engine) => {
+const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction> = {
+    action: (piece: BoardPiece | null, boardState: BoardState, board: Engine) => {
         return processIsGameOver(boardState, board);
     }
 }
@@ -52,7 +53,7 @@ function isMoveAllowed(move: Move, boardState: BoardState, board: Engine) {
 
         // In check
         const check = isCheck(turn, res.newBoardState);
-        return !check;
+        return check.length === 0;
     } catch (ex) {
         // No king due to being captured
         return false;
@@ -65,12 +66,9 @@ function isMoveAllowed(move: Move, boardState: BoardState, board: Engine) {
  * @param board
  */
 function allowedMoves(boardState: BoardState, board: Engine) {
-
-    function isLegit(move: Move) {
-        return isMoveAllowed(move, boardState, board);
-    }
-
-    return boardState.moves.filter(isLegit);
+    return boardState.moves.filter(
+        move => isMoveAllowed(move, boardState, board)
+    );
 }
 
 /**
@@ -81,6 +79,7 @@ function allowedMoves(boardState: BoardState, board: Engine) {
 function processIsGameOver(boardState: BoardState, board: Engine) {
 
     const fiftyMoveStalemate = fiftyMoveRule(boardState);
+
     if (fiftyMoveStalemate) {
         boardState.gameIsDrawn = true;
         boardState.moves = []; // this should be already set to empty?
@@ -88,7 +87,9 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
         return true;
     }
 
-    const isInCheck = isCheck(boardState.whitesTurn, boardState);
+    const inCheckSquares = isCheck(boardState.whitesTurn, boardState);
+    boardState.tags.inCheckSquares = inCheckSquares;
+
     const moves = allowedMoves(boardState, board);
 
     const hasMoves = moves.length > 0;
@@ -97,8 +98,10 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
     boardState.moves = [];
     if (inCheckSquares.length > 0) {
         boardState.winnerIsWhite = !boardState.whitesTurn
+        boardState.tags.gameEndReason = boardState.whitesTurn ? "WhiteWinCheckMate" : "BlackWinCheckMate";
     } else {
         boardState.gameIsDrawn = true;
+        boardState.tags.gameEndReason = "OutOfMovesDraw";
     }
     return true;
 }
@@ -108,7 +111,7 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
  * @param checkWhite
  * @param boardState
  */
-function isCheck(checkWhite: boolean, boardState: BoardState) {
+function isCheck(checkWhite: boolean, boardState: BoardState): Move[] {
 
     let kingSquare: Square | undefined = undefined;
 
@@ -126,14 +129,12 @@ function isCheck(checkWhite: boolean, boardState: BoardState) {
 
     if (!kingSquare) throw Error("Unable to locate opposing king");
 
-    const kingAttackers = boardState.moves.filter((move) => {
+    return boardState.moves.filter((move) => {
 
         if (kingSquare == null) return
 
         return move.to.file === kingSquare.file && move.to.rank === kingSquare.rank;
     });
-
-    return kingAttackers.length > 0;
 }
 
 function fiftyMoveRule(state: BoardState) {

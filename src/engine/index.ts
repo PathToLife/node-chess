@@ -2,7 +2,7 @@ import {
     MoveFunction,
     BoardState,
     BoardTag,
-    IPiece
+    IPiece, BoardFunctionAction
 } from '../types';
 import toString from './helpers/toString';
 import getMoves from './helpers/getMoves';
@@ -24,11 +24,15 @@ export default class Engine {
     uciEngine: UCIEngine | null = null;
     rankCount: number = 8;
     fileCount: number = 8;
-    postMoveFunctions: MoveFunction[] = [];
+    postSuccessfulMoveFunctions: MoveFunction<BoardFunctionAction>[] = [];
 
     boardState: BoardState = {
         ranks: [],
-        tags: <BoardTag>{},
+        tags: {
+            inCheckSquares: [],
+            initialPieceCount: 0,
+            gameEndReason: null
+        },
         capturedPieces: [],
         whitesTurn: true,
         moveNumber: 1,
