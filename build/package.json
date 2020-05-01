@@ -1,0 +1,47 @@
+{
+    "name": "node-chess",
+    "version": "2.0.6",
+    "description": "An isomorphic and fully customisable JavaScript chess engine",
+    "main": "./build/src/index.js",
+    "types": "./build/src/index.d.ts",
+    "scripts": {
+        "test": "mocha --require ts-node/register test/*.spec.ts",
+        "start": "node src/index.js",
+        "package-browser": "browserify build/src/index.js -p [ tsify --noImplicitAny ] -o build/node-chess.js",
+        "package-tests": "browserify build/test/increments.spec.js -o profile/increments.js",
+        "build": "tsc",
+        "prepare": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/seikho/node-chess.git"
+    },
+    "keywords": [
+        "node",
+        "chess",
+        "calculate",
+        "validate",
+        "engine",
+        "analysis",
+        "variant",
+        "portal"
+    ],
+    "author": "Carl Winkler",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/seikho/node-chess/issues"
+    },
+    "homepage": "https://github.com/seikho/node-chess",
+    "devDependencies": {
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^7.0.2",
+        "browserify": "^16.5.1",
+        "chai": "^2.1.2",
+        "mocha": "^7.1.2",
+        "ts-node": "^8.9.1",
+        "tsify": "^4.0.1"
+    },
+    "dependencies": {
+        "typescript": "^3.8.3"
+    }
+}
