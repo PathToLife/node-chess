@@ -11,3 +11,4 @@ typings/
 
 !build/
 .idea
+debug.js
