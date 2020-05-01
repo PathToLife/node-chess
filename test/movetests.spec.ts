@@ -51,7 +51,7 @@ describe('should detect check', () => {
 describe('should detect check resolve', () => {
     const e = engine();
     e.parseFenString('rnbq1bnr/ppp1kppp/4p3/3p4/3P4/Q1P5/PP2PPPP/RNB1KBNR b KQ - 7 8')
-    console.log(e.toString())
+    // console.log(e.toString())
 
     it('should be in check', () => {
         expect(e.boardState.tags.inCheckSquares).length.to.be.greaterThan(0);
