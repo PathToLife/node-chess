@@ -1,8 +1,12 @@
-*.ts
 *.map
-.vscode/
-.tscache/
+.travis.yml
+
+build/test/
+test/
+src/
 profile/
 typings/
-!index.d.ts
-!src/typings/node-chess/node-chess.d.ts
+.vscode/
+.tscache/
+
+!build/
