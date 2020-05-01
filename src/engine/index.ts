@@ -1,7 +1,6 @@
 import {
     MoveFunction,
     BoardState,
-    BoardTag,
     IPiece, BoardFunctionAction
 } from '../types';
 import toString from './helpers/toString';

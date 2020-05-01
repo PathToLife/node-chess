@@ -20,7 +20,12 @@ import {
  */
 export const postMoveFunction: MoveFunction = {
     action: (piece: BoardPiece, boardState: BoardState, board: Engine): BoardFunctionCommandReturn | void => {
-        return isCheck(boardState.whitesTurn, boardState).length > 0 ? 'nullifyMoveDoesNotSolveCheck' : undefined;
+        const res = isCheck(boardState.whitesTurn, boardState)
+        if (res.length > 0) {
+            return 'nullifyMoveDoesNotSolveCheck';
+        } else {
+            return undefined
+        }
     }
 }
 

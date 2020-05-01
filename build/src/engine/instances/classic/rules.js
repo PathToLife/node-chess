@@ -9,7 +9,13 @@ const pawn_1 = require("./pawn");
  */
 exports.postMoveFunction = {
     action: (piece, boardState, board) => {
-        return isCheck(boardState.whitesTurn, boardState).length > 0 ? 'nullifyMoveDoesNotSolveCheck' : undefined;
+        const res = isCheck(boardState.whitesTurn, boardState);
+        if (res.length > 0) {
+            return 'nullifyMoveDoesNotSolveCheck';
+        }
+        else {
+            return undefined;
+        }
     }
 };
 const postSuccessfulMoveFunction = {

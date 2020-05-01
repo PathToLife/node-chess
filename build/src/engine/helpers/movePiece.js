@@ -40,6 +40,8 @@ function calculateMovePiece(move, _boardState) {
         if (destination.piece)
             fn.action(destination.piece, newBoardState, this);
     });
+    // Infer new moves, needs to be run before checking inCheck
+    this.populateAvailableMoves(newBoardState);
     // Run post move functions, includes things such as marking square as enpassant
     const boardStatePostMoveFunctions = newBoardState.postMoveFunctions || [];
     let shouldNullifyMove = false;
@@ -63,7 +65,7 @@ function calculateMovePiece(move, _boardState) {
     newBoardState.moveNumber++;
     // Remove postMoveFunctions that are expired
     newBoardState.postMoveFunctions = boardStatePostMoveFunctions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);
-    // Infer new moves
+    // Infer new moves, needs to be run after enpassant
     this.populateAvailableMoves(newBoardState);
     return {
         newBoardState,

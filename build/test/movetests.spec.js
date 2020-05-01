@@ -45,6 +45,18 @@ describe('should detect check', () => {
         chai_1.expect(res).to.be.null;
     });
 });
+describe('should detect check resolve', () => {
+    const e = engine_1.default();
+    e.parseFenString('rnbq1bnr/ppp1kppp/4p3/3p4/3P4/Q1P5/PP2PPPP/RNB1KBNR b KQ - 7 8');
+    console.log(e.toString());
+    it('should be in check', () => {
+        chai_1.expect(e.boardState.tags.inCheckSquares).length.to.be.greaterThan(0);
+    });
+    it('should resolve check', () => {
+        const res = e.movePiece({ from: { file: 4, rank: 8 }, to: { file: 4, rank: 6 } });
+        chai_1.expect(res).to.not.be.null;
+    });
+});
 describe('should not allow weird enpassant move', () => {
     const e = engine_1.default();
     it('should move white pawn', () => {

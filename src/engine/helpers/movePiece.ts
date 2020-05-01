@@ -3,7 +3,9 @@ import {
 	BoardState,
 	Square,
 	Move,
-	MoveFunction, BoardPiece, BoardFunctionCommandReturn,
+	MoveFunction,
+	BoardPiece,
+	BoardFunctionCommandReturn
 } from '../../types';
 import deepCopy from './deepCopy';
 
@@ -62,6 +64,9 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 			fn.action(destination.piece, newBoardState, this)
 	});
 
+	// Infer new moves, needs to be run before checking inCheck
+	this.populateAvailableMoves(newBoardState);
+
 	// Run post move functions, includes things such as marking square as enpassant
 	const boardStatePostMoveFunctions: MoveFunction[] = newBoardState.postMoveFunctions || [];
 	let shouldNullifyMove = false
@@ -88,7 +93,7 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 	// Remove postMoveFunctions that are expired
 	newBoardState.postMoveFunctions = boardStatePostMoveFunctions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);
 
-	// Infer new moves
+	// Infer new moves, needs to be run after enpassant
 	this.populateAvailableMoves(newBoardState);
 
 	return {

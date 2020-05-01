@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import engine from "../src/engine/instances/classic/engine";
 
-describe('should move pawns correctly',  () => {
+describe('should move pawns correctly', () => {
     const e = engine()
     expect(e.stringifyFenString()).to.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 
@@ -10,13 +10,13 @@ describe('should move pawns correctly',  () => {
         expect(res).to.be.not.null;
     })
 
-    it ('should not allow white to repeat move', () => {
+    it('should not allow white to repeat move', () => {
         const res2 = e.movePiece({from: {file: 4, rank: 2}, to: {file: 4, rank: 4}})
         expect(res2).to.be.null;
     })
 
     it('should not allow white to move a different piece', () => {
-        const res3 = e.movePiece({from: {file: 3, rank: 2}, to: {file: 3, rank:3}})
+        const res3 = e.movePiece({from: {file: 3, rank: 2}, to: {file: 3, rank: 3}})
         expect(res3).to.be.null;
     })
 });
@@ -48,21 +48,35 @@ describe('should detect check', () => {
     })
 })
 
+describe('should detect check resolve', () => {
+    const e = engine();
+    e.parseFenString('rnbq1bnr/ppp1kppp/4p3/3p4/3P4/Q1P5/PP2PPPP/RNB1KBNR b KQ - 7 8')
+    console.log(e.toString())
+
+    it('should be in check', () => {
+        expect(e.boardState.tags.inCheckSquares).length.to.be.greaterThan(0);
+    })
+    it('should resolve check', () => {
+        const res = e.movePiece({from: {file: 4, rank: 8}, to: {file: 4, rank: 6}})
+        expect(res).to.not.be.null;
+    })
+})
+
 describe('should not allow weird enpassant move', () => {
     const e = engine()
 
     it('should move white pawn', () => {
-        expect(e.movePiece({from: {file:5, rank:2}, to: {file:5, rank: 4}})).to.not.be.null;
+        expect(e.movePiece({from: {file: 5, rank: 2}, to: {file: 5, rank: 4}})).to.not.be.null;
         // console.log(e.toString());
     })
 
     it('should move black pawn', () => {
-        expect(e.movePiece({from: {file:5, rank:7}, to: {file:5, rank: 5}})).to.not.be.null;
+        expect(e.movePiece({from: {file: 5, rank: 7}, to: {file: 5, rank: 5}})).to.not.be.null;
         // console.log(e.toString());
     })
 
     it('should not enpassant move weird white pawn', () => {
-        expect(e.movePiece({from: {file:6, rank:2}, to: {file:5, rank: 3}})).to.be.null;
+        expect(e.movePiece({from: {file: 6, rank: 2}, to: {file: 5, rank: 3}})).to.be.null;
         // console.log(e.toString());
     })
 })
