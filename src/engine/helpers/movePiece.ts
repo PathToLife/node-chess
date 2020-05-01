@@ -62,8 +62,8 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 			fn.action(destination.piece, newBoardState, this)
 	});
 
-	// Infer new moves
-	this.populateAvailableMoves(newBoardState);
+	// Set turn
+	newBoardState.whitesTurn = !newBoardState.whitesTurn;
 
 	// Run post move functions, includes things such as marking square as enpassant
 	const boardStatePostMoveFunctions: MoveFunction[] = newBoardState.postMoveFunctions || [];
@@ -83,14 +83,14 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 		return null;
 	}
 
-	// Set turn
-	newBoardState.whitesTurn = !newBoardState.whitesTurn;
-
 
 	// Update move count, perhaps length of moveHistory !== moveCount?
 	newBoardState.moveNumber++;
 	// Remove postMoveFunctions that are expired
 	newBoardState.postMoveFunctions = boardStatePostMoveFunctions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);
+
+	// Infer new moves
+	this.populateAvailableMoves(newBoardState);
 
 	return {
 		newBoardState,

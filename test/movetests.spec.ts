@@ -25,8 +25,6 @@ describe('should detect check', () => {
     const e = engine()
     e.parseFenString('rnb1kbnr/ppp2ppp/8/3pP1q1/4P3/5P2/PPPK2PP/RNBQ1BNR b KQkq - 0 10')
 
-    console.log(e.toString())
-
     it('should have white king in the right place', () => {
         const sq = e.getSquare({file: 4, rank: 2})
         expect(sq.piece?.name).to.equal('King')
@@ -44,5 +42,24 @@ describe('should detect check', () => {
         console.log(e.toString())
         const res = e.movePiece({from: {file: 3, rank: 3}, to: {file: 3, rank: 4}})
         expect(res).to.be.null;
+    })
+})
+
+describe('should not allow weird enpassant move', () => {
+    const e = engine()
+
+    it('should move white pawn', () => {
+        expect(e.movePiece({from: {file:5, rank:2}, to: {file:5, rank: 4}})).to.not.be.null;
+        console.log(e.toString());
+    })
+
+    it('should move black pawn', () => {
+        expect(e.movePiece({from: {file:5, rank:7}, to: {file:5, rank: 5}})).to.not.be.null;
+        console.log(e.toString());
+    })
+
+    it('should not enpassant move weird white pawn', () => {
+        expect(e.movePiece({from: {file:6, rank:2}, to: {file:5, rank: 3}})).to.be.null;
+        console.log(e.toString());
     })
 })
