@@ -9,7 +9,8 @@
     "start": "node src/index.js",
     "package-browser": "browserify build/src/index.js -p [ tsify --noImplicitAny ] -o build/node-chess.js",
     "package-tests": "browserify build/test/increments.spec.js -o profile/increments.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
