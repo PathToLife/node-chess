@@ -1,5 +1,6 @@
 import BasePiece from './engine/basePiece';
 import Engine from './engine';
+export { version } from '../package.json';
 export interface BoardState {
     ranks: Rank[];
     tags: BoardTag;
