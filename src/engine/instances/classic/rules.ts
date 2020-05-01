@@ -14,13 +14,22 @@ import {
  * Classic Chess Game Rules
  */
 
+/**
+ * Checks if player is still in check after a move
+ */
+export const postMoveFunction: MoveFunction = {
+    action: (piece: BoardPiece, boardState: BoardState, board: Engine): BoardFunctionCommandReturn | void => {
+        return isCheck(boardState.whitesTurn, boardState).length > 0 ? 'nullifyMoveDoesNotSolveCheck' : undefined;
+    }
+}
+
 const postMoveFunction: MoveFunction = {
     action: (piece: BoardPiece, boardState: BoardState, board: Engine) => {
         return processIsGameOver(boardState, board);
     }
 }
 
-export default postMoveFunction
+export default postSuccessfulMoveFunction
 
 /**
  * Check if move a move is allowed
@@ -75,6 +84,7 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
     if (fiftyMoveStalemate) {
         boardState.gameIsDrawn = true;
         boardState.moves = []; // this should be already set to empty?
+        boardState.tags.gameEndReason = "50RuleDraw";
         return true;
     }
 
@@ -85,7 +95,7 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
     if (hasMoves) return false;
 
     boardState.moves = [];
-    if (isInCheck) {
+    if (inCheckSquares.length > 0) {
         boardState.winnerIsWhite = !boardState.whitesTurn
     } else {
         boardState.gameIsDrawn = true;
@@ -94,7 +104,7 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
 }
 
 /**
- * Check is side is inCheck given a board state
+ * Check if side is inCheck given a board state, and returns squares in question
  * @param checkWhite
  * @param boardState
  */

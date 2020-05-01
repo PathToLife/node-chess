@@ -18,10 +18,14 @@ class Engine {
         this.uciEngine = null;
         this.rankCount = 8;
         this.fileCount = 8;
-        this.postMoveFunctions = [];
+        this.postSuccessfulMoveFunctions = [];
         this.boardState = {
             ranks: [],
-            tags: {},
+            tags: {
+                inCheckSquares: [],
+                initialPieceCount: 0,
+                gameEndReason: null
+            },
             capturedPieces: [],
             whitesTurn: true,
             moveNumber: 1,

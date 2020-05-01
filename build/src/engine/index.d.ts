@@ -1,4 +1,4 @@
-import { MoveFunction, BoardState, IPiece } from '../types';
+import { MoveFunction, BoardState, IPiece, BoardFunctionAction } from '../types';
 import PieceFactory from './basePiece';
 /**
  * Board: extensible board (TODO: more detail)
@@ -8,7 +8,7 @@ export default class Engine {
     uciEngine: UCIEngine | null;
     rankCount: number;
     fileCount: number;
-    postMoveFunctions: MoveFunction[];
+    postSuccessfulMoveFunctions: MoveFunction<BoardFunctionAction>[];
     boardState: BoardState;
     pieceDefinitions: IPiece[];
     pieceFactory: typeof PieceFactory;

@@ -1,6 +1,10 @@
-import { MoveFunction } from '../../../types';
+import { BoardFunctionAction, MoveFunction } from '../../../types';
 /**
  * Classic Chess Game Rules
  */
-declare const postMoveFunction: MoveFunction;
-export default postMoveFunction;
+/**
+ * Checks if player is still in check after a move
+ */
+export declare const postMoveFunction: MoveFunction;
+declare const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction>;
+export default postSuccessfulMoveFunction;

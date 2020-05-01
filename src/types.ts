@@ -16,10 +16,14 @@ export interface BoardState {
 }
 
 export interface BoardTag {
-    [index: string]: any;
+    initialPieceCount: number,
+    inCheckSquares: Move[]
+    gameEndReason: null | TGameEndReason
 }
 
 export type MoveFunctionAction = (piece: BoardPiece, boardState: BoardState, board: Engine) => any;
+
+export type BoardFunctionCommandReturn = 'nullifyMoveDoesNotSolveCheck';
 
 export interface MoveFunction {
     moveNumber?: number;

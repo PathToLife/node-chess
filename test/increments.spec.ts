@@ -129,7 +129,7 @@ describe("game conclusion tests", () => {
 
 	stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
 
-	it("Will declare that the game is drawn by stalement", () => {
+	it("Will declare that the game is drawn by stalemate", () => {
 		expect(stalemate.boardState.gameIsDrawn).to.equal(true);
 	})
 });

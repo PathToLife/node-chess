@@ -38,6 +38,11 @@ describe('should detect check', () => {
         expect(sq.piece?.isWhite).to.be.false;
     })
     it('should detect check', () => {
-        expect(e.boardState.tags)
+        expect(e.boardState.tags.inCheckSquares.length > 0)
+    })
+    it('should not allow move that does not solve check', () => {
+        console.log(e.toString())
+        const res = e.movePiece({from: {file: 3, rank: 3}, to: {file: 3, rank: 4}})
+        expect(res).to.be.null;
     })
 })

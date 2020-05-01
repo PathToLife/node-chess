@@ -3,7 +3,7 @@ import {
 	BoardState,
 	Square,
 	Move,
-	MoveFunction, BoardPiece,
+	MoveFunction, BoardPiece, BoardFunctionCommandReturn,
 } from '../../types';
 import deepCopy from './deepCopy';
 
@@ -62,27 +62,35 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 			fn.action(destination.piece, newBoardState, this)
 	});
 
-	// Set turn
-	newBoardState.whitesTurn = !newBoardState.whitesTurn;
-
 	// Infer new moves
 	this.populateAvailableMoves(newBoardState);
 
 	// Run post move functions, includes things such as marking square as enpassant
-	const enginePostMoveActions: MoveFunction[] = newBoardState.postMoveFunctions || [];
-
-	enginePostMoveActions.forEach(postMove => {
+	const boardStatePostMoveFunctions: MoveFunction[] = newBoardState.postMoveFunctions || [];
+	let shouldNullifyMove = false
+	boardStatePostMoveFunctions.forEach(postMove => {
 		if (!postMove.moveNumber || postMove.moveNumber === newBoardState.moveNumber) {
-			if (destination.piece)
-				postMove.action(destination.piece, newBoardState, this);
+			if (destination.piece) {
+				const res = postMove.action(destination.piece, newBoardState, this);
+				const nullCmd: BoardFunctionCommandReturn = "nullifyMoveDoesNotSolveCheck";
+				if (res === nullCmd) {
+					shouldNullifyMove = true;
+				}
+			}
 		}
 	});
+	if (shouldNullifyMove) {
+		return null;
+	}
+
+	// Set turn
+	newBoardState.whitesTurn = !newBoardState.whitesTurn;
 
 
 	// Update move count, perhaps length of moveHistory !== moveCount?
 	newBoardState.moveNumber++;
-
-	newBoardState.postMoveFunctions = enginePostMoveActions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);
+	// Remove postMoveFunctions that are expired
+	newBoardState.postMoveFunctions = boardStatePostMoveFunctions.filter(pmf => !pmf.moveNumber || pmf.moveNumber >= newBoardState.moveNumber);
 
 	return {
 		newBoardState,
@@ -96,7 +104,7 @@ export default function movePiece(this: Engine, move: Move): BoardState | null {
 
 	if (res === null) return null
 
-	this.postMoveFunctions.forEach(moveFn => {
+	this.postSuccessfulMoveFunctions.forEach(moveFn => {
 		moveFn.action(res.pieceAfterMove, res.newBoardState, this);
 	});
 

@@ -103,7 +103,7 @@ describe("game conclusion tests", () => {
         chai_1.expect(blackCheckmate.boardState.winnerIsWhite).to.equal(false);
     });
     stalementCmMoveTest("[Stalemate] will move Ra6", coord(3, 6), coord(1, 6));
-    it("Will declare that the game is drawn by stalement", () => {
+    it("Will declare that the game is drawn by stalemate", () => {
         chai_1.expect(stalemate.boardState.gameIsDrawn).to.equal(true);
     });
 });

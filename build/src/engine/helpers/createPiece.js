@@ -11,9 +11,9 @@ function createPiece(notation, location) {
     if (matchingPiece.length === 0)
         throw Error('piece not found');
     // Update Piece Count on the boardState, and get ID of the piece
-    let count = this.boardState.tags["pieceCount"] || 0;
+    let count = this.boardState.tags.initialPieceCount || 0;
     count++;
-    this.boardState.tags["pieceCount"] = count;
+    this.boardState.tags.initialPieceCount = count;
     // Create the piece, set id to be the above
     const newPiece = new this.pieceFactory(matchingPiece[0], notation);
     newPiece.id = count;

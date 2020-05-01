@@ -14,7 +14,9 @@ export interface BoardState {
     moveHistory: MoveHistory[];
 }
 export interface BoardTag {
-    [index: string]: any;
+    initialPieceCount: number;
+    inCheckSquares: Move[];
+    gameEndReason: null | TGameEndReason;
 }
 export declare type MoveFunctionAction = (piece: BoardPiece, boardState: BoardState, board: Engine) => any;
 export interface MoveFunction {

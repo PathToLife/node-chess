@@ -17,7 +17,8 @@ function classEngine() {
         pawn_1.default, knight_1.default, bishop_1.default, rook_1.default, queen_1.default, king_1.default
     ];
     board.parseFenString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    board.postMoveFunctions = [rules_1.default];
+    board.postSuccessfulMoveFunctions = [rules_1.default];
+    board.boardState.postMoveFunctions.push(rules_1.postMoveFunction);
     return board;
 }
 exports.default = classEngine;
