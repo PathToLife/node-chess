@@ -15,12 +15,12 @@ import {
  */
 export default function infer(this: Engine, piece: BasePiece, state?: BoardState) {
 	state = state || this.boardState;
-	var moves: Move[] = [];
+	const moves: Move[] = [];
 
-	for (var key in piece.movement) {
-		var move = piece.movement[key];
+	for (let key in piece.movement) {
+		const move = piece.movement[key];
 
-		var canProcess = true;
+		let canProcess = true;
 		if (move.preCondition)
 			canProcess = move.preCondition(piece, state, this);
 
@@ -28,20 +28,20 @@ export default function infer(this: Engine, piece: BasePiece, state?: BoardState
 			// Pre-conditions only apply to
 			if (!canProcess) continue;
 
-			var newMove = processTransform(move, piece, state, this);
+			const newMove = processTransform(move, piece, state, this);
 			if (newMove) moves.push(newMove);
 		}
 		else {
-			var newMoves = processIncrementer(move, piece, state, this);
+			const newMoves = processIncrementer(move, piece, state, this);
 
 			if (move.postMoveAction) {
-				for (var x = 0; x < newMoves.length; x++) {
+				for (let x = 0; x < newMoves.length; x++) {
 					newMoves[x].postMoveActions = [move.postMoveAction]
 				}
 			}
 
-			moves = moves.concat(newMoves);
-		};
+			moves.push(...newMoves);
+		}
 	}
 
 	return moves;
@@ -49,58 +49,58 @@ export default function infer(this: Engine, piece: BasePiece, state?: BoardState
 
 function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: BoardState, board: Engine) {
 
-	var modifier = piece.isWhite ? 1 : -1;
-	var finalMove: Move = {
+	const modifier = piece.isWhite ? 1 : -1;
+	const finalMove: Move = {
 		from: copyCoord(piece.location),
 		to: copyCoord(piece.location),
 		isWhite: piece.isWhite
 	};
 
-	var canSkipLogic = move.preCondition && !move.useDefaultConditions;
+	const canSkipLogic = move.preCondition && !move.useDefaultConditions;
 
 	if (move.postMoveAction)
 		finalMove.postMoveActions = [move.postMoveAction];
 
-	var steps = [piece.location];
-	var transforms = <Transform[]>move.transforms;
+	const steps = [piece.location];
+	let transforms = <Transform[]>move.transforms;
 
 	if (!Array.isArray(transforms)) transforms = <any>[transforms];
 
-	for (var x = 0; x < transforms.length; x++) {
-		var transform = transforms[x];
-		var appliedTransform = applyTransform(steps[x], transform, modifier);
+	for (let x = 0; x < transforms.length; x++) {
+		const transform = transforms[x];
+		const appliedTransform = applyTransform(steps[x], transform, modifier);
 		if (!isInBounds(appliedTransform)) return null;
 
 		steps.push(appliedTransform);
 	}
 
-	var finalCoord = steps[steps.length - 1];
+	const finalCoord = steps[steps.length - 1];
 	finalMove.to = finalCoord;
 
 	// Pre-condition has passed and useDefaultConditions is false.
 	if (canSkipLogic) return finalMove;
 
-	var finalSquare = board.getSquare(finalCoord, boardState);
+	const finalSquare = board.getSquare(finalCoord, boardState);
 	if (!finalSquare) return null;
-	var finalSquarePiece = finalSquare.piece;
+	const finalSquarePiece = finalSquare.piece;
 
-	var canCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
+	const canCaptureOnFinalSquare = move.canCapture && finalSquarePiece && finalSquarePiece.isWhite != piece.isWhite;
 	if (canCaptureOnFinalSquare) return finalMove;
 
-	var canMoveButSquareOccupied = move.canMove && finalSquarePiece;
+	const canMoveButSquareOccupied = move.canMove && finalSquarePiece;
 	if (canMoveButSquareOccupied) return null;
 
-	for (var x = 1; x < steps.length; x++) {
-		var prev = steps[x - 1];
-		var step = steps[x];
-		var transform = transforms[x - 1];
+	for (let x = 1; x < steps.length; x++) {
+		const prev = steps[x - 1];
+		const step = steps[x];
+		const transform = transforms[x - 1];
 
 		if (step !== finalCoord) {
 			//TODO: Allow 'squaresBetween' here
 			if (transform.canJump) continue;
 
 			if (transform.squaresBetween) {
-				var canMove = checkBetween(
+				const canMove = checkBetween(
 					prev,
 					step,
 					piece,
@@ -120,7 +120,7 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 		if (transform.canJump) return finalMove;
 
 		if (transform.squaresBetween) {
-			var canMove = checkBetween(
+			const canMove = checkBetween(
 				prev,
 				step,
 				piece,
@@ -131,11 +131,11 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 			if (!canMove) return finalMove;
 		}
 
-		var isFinalSquareVacant = finalSquare.piece == null;
+		const isFinalSquareVacant = finalSquare.piece == null;
 		if (move.canMove && isFinalSquareVacant)
 			return finalMove;
 
-		var isFinalSquareOccupiedByEnemy = finalSquare.piece && finalSquare.piece.isWhite !== piece.isWhite;
+		const isFinalSquareOccupiedByEnemy = finalSquare.piece && finalSquare.piece.isWhite !== piece.isWhite;
 		if (move.canCapture && isFinalSquareOccupiedByEnemy) return finalMove;
 	}
 
@@ -147,17 +147,17 @@ function processIncrementer(move: MoveDefinition, piece: BoardPiece, state: Boar
 	if (!move.incrementer) return [];
 
 	let currCoords: Coordinate = { file: piece.location.file, rank: piece.location.rank };
-	var modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
+	const modifier = piece.isWhite || move.incrementer.absolute ? 1 : -1;
 
-	var file = move.incrementer.file * modifier;
-	var rank = move.incrementer.rank * modifier;
-	var validMoves: Move[] = [];
+	const file = move.incrementer.file * modifier;
+	const rank = move.incrementer.rank * modifier;
+	const validMoves: Move[] = [];
 
 	while (true) {
 		currCoords.file += file;
 		currCoords.rank += rank;
 		if (!isInBounds(currCoords)) break;
-		var square = board.getSquare(currCoords, state);
+		const square = board.getSquare(currCoords, state);
 
 		if (square.piece) {
 
@@ -205,7 +205,7 @@ export function isInBounds(position: Coordinate): boolean {
 
 // TODO: Shrink function signature. Take an object instead
 function checkBetween(start: Coordinate, end: Coordinate, piece: BoardPiece, transform: Transform, boardState: BoardState, board: Engine) {
-	var difference = {
+	const difference = {
 		file: Math.abs(start.file - end.file),
 		rank: Math.abs(start.rank - end.rank)
 	};
@@ -216,15 +216,15 @@ function checkBetween(start: Coordinate, end: Coordinate, piece: BoardPiece, tra
 
 	if (difference.file === 1 || difference.rank === 1) return false;
 
-	var dimension = difference.file > 0 ? "file" : "rank";
-	var inc = end[dimension] > start[dimension] ? -1 : 1;
+	const dimension = difference.file > 0 ? "file" : "rank";
+	const inc = end[dimension] > start[dimension] ? -1 : 1;
 
 	// Ensure all squares between current and previous are vacant
 	// Avoid closures to avoid heap allocations
-	for (var y = end[dimension]; y !== start[dimension]; y += inc) {
-		var between: Coordinate = { file: end.file, rank: end.rank };
+	for (let y = end[dimension]; y !== start[dimension]; y += inc) {
+		const between: Coordinate = { file: end.file, rank: end.rank };
 		between[dimension] += inc;
-		var sq = board.getSquare(between, boardState);
+		const sq = board.getSquare(between, boardState);
 
 		// If a square is occupied, the move is not valid
 		if (sq.piece) return false;
@@ -237,8 +237,8 @@ function checkBetween(start: Coordinate, end: Coordinate, piece: BoardPiece, tra
 function applyTransform(coordinate: Coordinate, transform: Transform, modifier: number) {
 	if (transform.absolute) modifier = 1;
 
-	var file = coordinate.file + (transform.file * modifier);
-	var rank = coordinate.rank + (transform.rank * modifier);
+	const file = coordinate.file + (transform.file * modifier);
+	const rank = coordinate.rank + (transform.rank * modifier);
 
 	return {
 		file,
