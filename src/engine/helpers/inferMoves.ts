@@ -49,10 +49,12 @@ export default function infer(this: Engine, piece: BasePiece, state?: BoardState
 
 function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: BoardState, board: Engine) {
 
+	if (!move.transforms) return;
+
 	const modifier = piece.isWhite ? 1 : -1;
 	const finalMove: Move = {
 		from: copyCoord(piece.location),
-		to: copyCoord(piece.location),
+		to: copyCoord(piece.location), // this will be overwritten later
 		isWhite: piece.isWhite
 	};
 
@@ -61,10 +63,16 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 	if (move.postMoveAction)
 		finalMove.postMoveActions = [move.postMoveAction];
 
+	// Stores all possible transform destinations for the piece, without any checks, except out of bounds
 	const steps = [piece.location];
-	let transforms = <Transform[]>move.transforms;
 
-	if (!Array.isArray(transforms)) transforms = <any>[transforms];
+	let transforms: Transform[] = [];
+
+	if (!Array.isArray(move.transforms)) {
+		transforms.push(move.transforms)
+	} else {
+		transforms = move.transforms;
+	}
 
 	for (let x = 0; x < transforms.length; x++) {
 		const transform = transforms[x];
@@ -77,6 +85,9 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 	const finalCoord = steps[steps.length - 1];
 	finalMove.to = finalCoord;
 
+	if (finalCoord.file == 7 && finalCoord.rank == 4 && piece.name == 'Pawn') {
+		debugger;
+	}
 	// Pre-condition has passed and useDefaultConditions is false.
 	if (canSkipLogic) return finalMove;
 
@@ -95,26 +106,27 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 		const step = steps[x];
 		const transform = transforms[x - 1];
 
-		if (step !== finalCoord) {
-			//TODO: Allow 'squaresBetween' here
-			if (transform.canJump) continue;
+		// Not sure what this does
+		// if (step !== finalCoord) {
+		// 	//TODO: Allow 'squaresBetween' here
+		// 	if (transform.canJump) continue;
+		//
+		// 	if (transform.squaresBetween) {
+		// 		const canMove = checkBetween(
+		// 			prev,
+		// 			step,
+		// 			piece,
+		// 			transform,
+		// 			boardState,
+		// 			board);
+		//
+		// 		if (!canMove) return null;
+		// 	}
+		//
+		// 	continue;
+		// }
 
-			if (transform.squaresBetween) {
-				const canMove = checkBetween(
-					prev,
-					step,
-					piece,
-					transform,
-					boardState,
-					board);
-
-				if (!canMove) return null;
-			}
-
-			continue;
-		}
-
-		// Logic when analyzing the final step in a MoveDefintion
+		// Logic when analyzing the final step in a MoveDefinition
 
 		// If we can jump, don't checkBetween
 		if (transform.canJump) return finalMove;
@@ -128,7 +140,7 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 				boardState,
 				board);
 
-			if (!canMove) return finalMove;
+			if (!canMove) return null;
 		}
 
 		const isFinalSquareVacant = finalSquare.piece == null;
@@ -210,9 +222,14 @@ function checkBetween(start: Coordinate, end: Coordinate, piece: BoardPiece, tra
 		rank: Math.abs(start.rank - end.rank)
 	};
 
-	// If
+	// Diagonal jumps not supported currently for in between checks.
+	// Knights are valid because we don't check between for them.
 	if (difference.file > 0 && difference.rank > 0)
-		throw Error(`Invalid non-jumpable move in ${piece.name} definition: ${transform}`);
+		throw Error(`Invalid non-jumpable move in ${piece.name} definition: ${JSON.stringify(transform)}`);
+
+	if (end.file == 7 && end.rank == 4 && piece.name == 'Pawn') {
+		debugger;
+	}
 
 	if (difference.file === 1 || difference.rank === 1) return false;
 

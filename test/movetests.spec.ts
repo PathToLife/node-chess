@@ -118,6 +118,24 @@ describe('should promote to correct color', () => {
 
 })
 
+describe('should not allow pawn to jump over pieces on start', () => {
+
+    const e2 = addPlaceHolderSpecialDefinitions(engine())
+
+    it ('should not allow pawn jump 2 move or opponent piece', () => {
+        e2.parseFenString('dwaqka1d/pppppppp/8/8/4P3/3P2w1/PPP2PPP/DWAQKAWD w KQkq - 4 5')
+        expect(e2.movePiece({from: {file: 7, rank: 2}, to: {file: 7, rank: 4}})).be.null;
+        console.log(e2.toString())
+    })
+
+    it ('should not allow pawn jump 2 move over same piece', () => {
+        e2.parseFenString('dwaqkawd/ppp1pppp/3p4/8/8/3A4/PPPPPPPP/DW1QKAWD w KQkq - 2 3')
+        expect(e2.movePiece({from: {file: 4, rank: 2}, to: {file: 4, rank: 4}})).be.null;
+        console.log(e2.toString())
+    })
+
+})
+
 function addPlaceHolderSpecialDefinitions(e: Engine) {
     const d2 = {
         ...rook,

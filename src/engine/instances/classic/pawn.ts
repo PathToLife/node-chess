@@ -3,7 +3,7 @@ import {
 	MoveDefinition,
 	Coordinate,
 	BoardState,
-	IPiece, BoardPiece, MoveFunctionAction
+	IPiece, BoardPiece, MoveFunctionAction, Transform
 } from '../../../types';
 import {queen} from './queen';
 import {isInBounds} from "../../helpers/inferMoves";
@@ -38,12 +38,34 @@ const moveForward: MoveDefinition = {
 	}
 }
 
+function applyTransform(coordinate: Coordinate, transform: Transform, modifier: number) {
+	if (transform.absolute) modifier = 1;
+
+	const file = coordinate.file + (transform.file * modifier);
+	const rank = coordinate.rank + (transform.rank * modifier);
+
+	return {
+		file,
+		rank
+	};
+}
+
 const firstMove: MoveDefinition = {
 	canMove: true,
 	canCapture: false,
-	transforms: { file: 0, rank: 2 },
+	transforms: { file: 0, rank: 2, canJump: false, squaresBetween: true },
 	useDefaultConditions: true,
-	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0,
+	preCondition: (piece, boardState) => {
+
+		const hasPreviousMoves = boardState.moveHistory.filter(m => m.piece.id === piece.id).length !== 0;
+		if (hasPreviousMoves) return false;
+
+		const modifier = piece.isWhite ? 1 : -1;
+
+		const nextCoords = applyTransform(piece.location, { file: 0, rank: 2, canJump: false }, modifier);
+
+		return true;
+	},
 	postMoveAction: {
 		action: (piece, state, board) => {
 			const coordBehindPawn = piece.getRelativeDestination({ file: 0, rank: -1 })
