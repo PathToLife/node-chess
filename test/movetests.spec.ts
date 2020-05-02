@@ -133,6 +133,15 @@ describe('should not allow pawn to jump over pieces on start', () => {
         expect(e2.movePiece({from: {file: 4, rank: 2}, to: {file: 4, rank: 4}})).be.null;
         // console.log(e2.toString())
     })
+})
+
+describe('', () => {
+
+    const e2 = addPlaceHolderSpecialDefinitions(engine());
+
+    e2.parseFenString('dwaqk2d/pp3ppp/2p1pwa1/3p4/Q2P4/2P1PWA1/PP3PPP/DWA1K2D b KQkq - 11 12')
+
+    console.log(e2.toString())
 
 })
 
