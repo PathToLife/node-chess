@@ -6,9 +6,4 @@ NUL
 node_modules/
 tsd.json
 .settings/
-
-
-!build/*.js
-!build/node-chess.js
-!debug.js
-!profile/increment.js
+build/
