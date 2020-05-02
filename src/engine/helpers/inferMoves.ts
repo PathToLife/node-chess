@@ -160,6 +160,7 @@ function processIncrementer(move: MoveDefinition, piece: BoardPiece, state: Boar
 		var square = board.getSquare(currCoords, state);
 
 		if (square.piece) {
+
 			if (square.piece.isWhite !== piece.isWhite) {
 				if (!move.canCapture && !move.incrementer.canJump) break;
 

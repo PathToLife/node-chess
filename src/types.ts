@@ -48,8 +48,8 @@ export interface Rank {
 }
 
 export interface Square {
-    rank: number;
     file: number;
+    rank: number;
     piece: BasePiece | null;
 
     tags: {[key: string]: boolean | string};

@@ -1,5 +1,7 @@
 import {expect} from 'chai';
 import engine from "../src/engine/instances/classic/engine";
+import {rook} from "../src";
+import Engine from "../src/engine";
 
 describe('should move pawns correctly', () => {
     const e = engine()
@@ -81,9 +83,36 @@ describe('should not allow weird enpassant move', () => {
     })
 })
 
+describe('should not capture piece on move', () => {
+    const e = addPlaceHolderSpecialDefinitions(engine())
+    e.parseFenString('dwaqkawd/ppp1pppp/3p4/7Q/4P3/8/PPPP1PPP/DWA1KAWD b KQkq - 3 4');
+
+    it ('should deny move', () => {
+        const res = e.movePiece({from: {file: 8, rank: 7}, to: {file: 8, rank: 5}});
+        expect(res).to.be.null;
+    })
+})
+
 describe('should promote to correct color', () => {
     const e = engine();
     e.parseFenString('rnb1kbnr/ppp2ppp/8/3p4/2BP3q/2P2PPN/PP1K3P/RNBQq2R w KQkq - 20 21')
 
 
 })
+
+function addPlaceHolderSpecialDefinitions(e: Engine) {
+    const d2 = {
+        ...rook,
+        notation: 'd'
+    }
+    const w2 = {
+        ...rook,
+        notation: 'w'
+    }
+    const a2 = {
+        ...rook,
+        notation: 'a'
+    }
+    e.pieceDefinitions.push(d2, w2, a2);
+    return e;
+}

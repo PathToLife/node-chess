@@ -40,7 +40,9 @@ const moveForward: MoveDefinition = {
 
 const firstMove: MoveDefinition = {
 	canMove: true,
+	canCapture: false,
 	transforms: { file: 0, rank: 2 },
+	useDefaultConditions: true,
 	preCondition: (piece, boardState) => boardState.moveHistory.filter(m => m.piece.id === piece.id).length === 0,
 	postMoveAction: {
 		action: (piece, state, board) => {

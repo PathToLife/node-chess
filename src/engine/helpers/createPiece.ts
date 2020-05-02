@@ -12,7 +12,7 @@ import {
  */
 export default function createPiece(this: Engine, notation: string, location: Coordinate): BasePiece {
     const matchingPiece = this.pieceDefinitions.filter(p => p.notation === notation.toLocaleLowerCase());
-    if (matchingPiece.length === 0) throw Error('piece not found');
+    if (matchingPiece.length === 0) throw Error(`piece not found ${notation.toLowerCase()}`);
 
     // Update Piece Count on the boardState, and get ID of the piece
     let count = this.boardState.tags.initialPieceCount || 0;
