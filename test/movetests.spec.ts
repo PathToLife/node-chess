@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import engine from "../src/engine/instances/classic/engine";
-import {rook} from "../src";
+import {pawn, queen, rook} from "../src";
 import Engine from "../src/engine";
 
 describe('should move pawns correctly', () => {
@@ -87,16 +87,34 @@ describe('pawn should not capture piece on move', () => {
     const e = addPlaceHolderSpecialDefinitions(engine())
     e.parseFenString('dwaqkawd/ppp1pppp/3p4/7Q/4P3/8/PPPP1PPP/DWA1KAWD b KQkq - 3 4');
 
-    it ('should deny move', () => {
+    it('should deny move', () => {
         const res = e.movePiece({from: {file: 8, rank: 7}, to: {file: 8, rank: 5}});
         expect(res).to.be.null;
     })
 })
 
 describe('should promote to correct color', () => {
-    const e = engine();
-    e.parseFenString('rnb1kbnr/ppp2ppp/8/3p4/2BP3q/2P2PPN/PP1K3P/RNBQq2R w KQkq - 20 21')
+    // const e = engine();
+    // e.parseFenString('rnb1kbnr/ppp2ppp/8/3p4/2BP3q/2P2PPN/PP1K3P/RNBQq2R w KQkq - 20 21')
 
+    const e2 = addPlaceHolderSpecialDefinitions(engine())
+    e2.parseFenString('2kdqa1d/pppa2P1/4p3/2wp3W/3P3p/3DP3/PPP2P1P/DWAQKA2 w KQ - 34 35');
+
+    it('should have pawn on 7,7', () => {
+        const sq = e2.getSquare({file: 7, rank: 7})
+        expect(sq.piece?.name).to.equal(pawn.name);
+        expect(sq.piece?.isWhite).to.be.true;
+    })
+
+    it('should allow move of pawn to 7,8', () => {
+        expect(e2.movePiece({from: {file: 7, rank: 7}, to: {file: 7, rank: 8}})).not.be.null;
+    })
+
+    it('should promote pawn to queen', () => {
+        const sq = e2.getSquare({file: 7, rank: 8})
+        expect(sq.piece?.name).to.equal(queen.name);
+        expect(sq.piece?.isWhite).to.be.true;
+    })
 
 })
 
