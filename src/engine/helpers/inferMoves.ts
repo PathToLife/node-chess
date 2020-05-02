@@ -85,9 +85,9 @@ function processTransform(move: MoveDefinition, piece: BoardPiece, boardState: B
 	const finalCoord = steps[steps.length - 1];
 	finalMove.to = finalCoord;
 
-	if (finalCoord.file == 7 && finalCoord.rank == 4 && piece.name == 'Pawn') {
-		debugger;
-	}
+	// if (finalCoord.file == 7 && finalCoord.rank == 4 && piece.name == 'Pawn') {
+	// 	debugger;
+	// }
 	// Pre-condition has passed and useDefaultConditions is false.
 	if (canSkipLogic) return finalMove;
 
@@ -227,9 +227,9 @@ function checkBetween(start: Coordinate, end: Coordinate, piece: BoardPiece, tra
 	if (difference.file > 0 && difference.rank > 0)
 		throw Error(`Invalid non-jumpable move in ${piece.name} definition: ${JSON.stringify(transform)}`);
 
-	if (end.file == 7 && end.rank == 4 && piece.name == 'Pawn') {
-		debugger;
-	}
+	// if (end.file == 7 && end.rank == 4 && piece.name == 'Pawn') {
+	// 	debugger;
+	// }
 
 	if (difference.file === 1 || difference.rank === 1) return false;
 
