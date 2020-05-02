@@ -83,7 +83,7 @@ describe('should not allow weird enpassant move', () => {
     })
 })
 
-describe('should not capture piece on move', () => {
+describe('pawn should not capture piece on move', () => {
     const e = addPlaceHolderSpecialDefinitions(engine())
     e.parseFenString('dwaqkawd/ppp1pppp/3p4/7Q/4P3/8/PPPP1PPP/DWA1KAWD b KQkq - 3 4');
 
