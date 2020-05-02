@@ -1,7 +1,8 @@
 import {
     MoveFunction,
     BoardState,
-    IPiece, BoardFunctionAction
+    BoardFunctionAction,
+    IPiece
 } from '../types';
 import toString from './helpers/toString';
 import getMoves from './helpers/getMoves';
@@ -13,6 +14,8 @@ import PieceFactory from './basePiece';
 import availableMoves from './helpers/availableMoves';
 import getSquare from './helpers/getSquare';
 import createPiece from './helpers/createPiece';
+
+import {version} from '../../package.json';
 
 /**
  * Board: extensible board (TODO: more detail)
@@ -40,6 +43,8 @@ export default class Engine {
         moves: [],
         moveHistory: []
     }
+
+    version: string = version;
 
     pieceDefinitions: IPiece[] = [];
     pieceFactory = PieceFactory;
