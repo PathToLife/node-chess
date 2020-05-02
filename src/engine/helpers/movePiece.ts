@@ -64,26 +64,15 @@ export function calculateMovePiece(this: Engine, move: Move, _boardState: BoardS
 			fn.action(destination.piece, newBoardState, this)
 	});
 
-	// Infer new moves, needs to be run before checking inCheck
-	this.populateAvailableMoves(newBoardState);
-
 	// Run post move functions, includes things such as marking square as enpassant
 	const boardStatePostMoveFunctions: MoveFunction[] = newBoardState.postMoveFunctions || [];
-	let shouldNullifyMove = false
 	boardStatePostMoveFunctions.forEach(postMove => {
 		if (!postMove.moveNumber || postMove.moveNumber === newBoardState.moveNumber) {
 			if (destination.piece) {
-				const res = postMove.action(destination.piece, newBoardState, this);
-				const nullCmd: BoardFunctionCommandReturn = "nullifyMoveDoesNotSolveCheck";
-				if (res === nullCmd) {
-					shouldNullifyMove = true;
-				}
+				postMove.action(destination.piece, newBoardState, this);
 			}
 		}
 	});
-	if (shouldNullifyMove) {
-		return null;
-	}
 
 	// Set turn
 	newBoardState.whitesTurn = !newBoardState.whitesTurn;
@@ -108,9 +97,15 @@ export default function movePiece(this: Engine, move: Move): BoardState | null {
 
 	if (res === null) return null
 
+	let shouldNullifyMove = false
 	this.postSuccessfulMoveFunctions.forEach(moveFn => {
-		moveFn.action(res.pieceAfterMove, res.newBoardState, this);
+		const actionRes = moveFn.action(res.pieceAfterMove, res.newBoardState, this);
+		const nullCmd: BoardFunctionCommandReturn = "nullifyMoveDoesNotSolveCheck";
+		if (actionRes === nullCmd) {
+			shouldNullifyMove = true;
+		}
 	});
+	if (shouldNullifyMove) return null;
 
 	this.boardState = res.newBoardState;
 	return res.newBoardState;

@@ -8,7 +8,8 @@ import {
     MoveHistory,
     BoardFunctionAction,
     BoardPiece,
-    MoveFunction, BoardFunctionCommandReturn,
+    MoveFunction,
+    BoardFunctionCommandReturn
 } from '../../../types';
 
 /**
@@ -16,22 +17,12 @@ import {
  */
 
 /**
+ * Game end checking
  * Checks if player is still in check after a move
  */
-export const postMoveFunction: MoveFunction = {
-    action: (piece: BoardPiece, boardState: BoardState, board: Engine): BoardFunctionCommandReturn | void => {
-        const res = isCheck(boardState.whitesTurn, boardState)
-        if (res.length > 0) {
-            return 'nullifyMoveDoesNotSolveCheck';
-        } else {
-            return undefined
-        }
-    }
-}
-
 export const postSuccessfulMoveFunction: MoveFunction<BoardFunctionAction> = {
     action: (piece: BoardPiece | null, boardState: BoardState, board: Engine) => {
-        return processIsGameOver(boardState, board);
+        return processGameState(boardState, board);
     }
 }
 
@@ -79,7 +70,7 @@ function allowedMoves(boardState: BoardState, board: Engine) {
  * @param boardState
  * @param board
  */
-function processIsGameOver(boardState: BoardState, board: Engine) {
+function processGameState(boardState: BoardState, board: Engine): boolean | BoardFunctionCommandReturn {
 
     const fiftyMoveStalemate = fiftyMoveRule(boardState);
 
@@ -90,13 +81,19 @@ function processIsGameOver(boardState: BoardState, board: Engine) {
         return true;
     }
 
+    const imInCheck = isCheck(!boardState.whitesTurn, boardState).length > 0;
     const inCheckSquares = isCheck(boardState.whitesTurn, boardState);
     boardState.tags.inCheckSquares = inCheckSquares;
 
     const moves = allowedMoves(boardState, board);
 
     const hasMoves = moves.length > 0;
-    if (hasMoves) return false;
+    if (hasMoves) {
+        if (imInCheck) {
+            return 'nullifyMoveDoesNotSolveCheck';
+        }
+        return false;
+    }
 
     boardState.moves = [];
     if (inCheckSquares.length > 0) {
@@ -125,7 +122,7 @@ function isCheck(checkWhite: boolean, boardState: BoardState): Move[] {
             const square = rank.squares[sx];
             if (!square.piece) continue;
 
-            const isKing = square.piece.name === "King" && square.piece.isWhite === checkWhite;
+            const isKing = square.piece.name === king.name && square.piece.isWhite === checkWhite;
             if (isKing) kingSquare = square;
         }
     }
